@@ -141,7 +141,7 @@ var bm25fIMS = function () {
       flds[ field ].pTasks = tasks;
       flds[ field ].pTaskCount = tasks.length;
     }
-    return true;
+    return tasks.length;
   }; // definePrepTasks()
 
   // #### Define Config

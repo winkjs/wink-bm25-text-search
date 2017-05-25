@@ -46,5 +46,18 @@ describe( 'definePrepTasks() Error Cases', function () {
       expect( bts.definePrepTasks.bind( null, ptask.whenInputIs, undefined ) ).to.throw( ptask.expectedOutputIs );
     } );
   } );
-}
-);
+} );
+
+describe( 'definePrepTasks() Proper Cases', function () {
+  var bts = bm25();
+  var prepTasks = [
+    { whenInputIs: [ prepare.string.tokenize0, prepare.string.stem ], expectedOutputIs: 2 },
+    { whenInputIs: [ ], expectedOutputIs: 0 }
+  ];
+
+  prepTasks.forEach( function ( ptask ) {
+    it( 'should return "' + ptask.expectedOutputIs + '" if the input is ' + JSON.stringify( ptask.whenInputIs ), function () {
+      expect( bts.definePrepTasks( ptask.whenInputIs ) ).to.equal( ptask.expectedOutputIs );
+    } );
+  } );
+} );
