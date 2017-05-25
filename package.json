@@ -1,0 +1,48 @@
+{
+  "name": "wink-bm25-text-search",
+  "version": "1.0.0",
+  "description": "Configurable BM25 Text Search Engine with simple semantic search support",
+  "keywords": [
+    "BM25",
+    "BM25F",
+    "TFIDF",
+    "TF-IDF",
+    "In Memory Searc",
+    "Semantic Search",
+    "Full Text Search",
+    "NLP",
+    "Natural Language Processing"
+  ],
+  "main": "src/wink-bm25-text-search.js",
+  "scripts": {
+    "pretest": "npm run lint && npm run hint",
+    "test": "istanbul cover _mocha ./test/",
+    "coveralls": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
+    "docs": "docco -o ./docs/ ./src/*.js",
+    "hint": "jshint ./src/*.js ./test/*.js",
+    "lint": "eslint ./src/*.js ./test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decisively/wink-bm25-text-search.git"
+  },
+  "author": "Sanjaya Kumar Saxena",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/decisively/wink-bm25-text-search/issues"
+  },
+  "homepage": "https://github.com/decisively/wink-bm25-text-search#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.15",
+    "docco": "^0.7.0",
+    "eslint": "^3.13.1",
+    "istanbul": "^0.4.5",
+    "jshint": "^2.9.4",
+    "mocha": "^3.1.0",
+    "mocha-lcov-reporter": "^1.2.0"
+  },
+  "dependencies": {
+    "wink-helpers": "^1.0.0"
+  }
+}
