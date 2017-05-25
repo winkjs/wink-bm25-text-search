@@ -40,7 +40,8 @@
     "istanbul": "^0.4.5",
     "jshint": "^2.9.4",
     "mocha": "^3.1.0",
-    "mocha-lcov-reporter": "^1.2.0"
+    "mocha-lcov-reporter": "^1.2.0",
+    "wink-nlp-utils": "^1.0.2"
   },
   "dependencies": {
     "wink-helpers": "^1.0.0"
