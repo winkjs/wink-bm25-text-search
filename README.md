@@ -1,7 +1,7 @@
 
 # wink-bm25-text-search
 
-> Configurable BM25 Text Search Engine with simple semantic search support
+> Configurable [BM25](http://opensourceconnections.com/blog/2015/10/16/bm25-the-next-generation-of-lucene-relevation/) Text Search Engine with [simple semantic search](http://opensourceconnections.com/blog/2016/10/19/bm25f-in-lucene/) support
 
 ### [![Build Status](https://api.travis-ci.org/decisively/wink-bm25-text-search.svg?branch=master)](https://travis-ci.org/decisively/wink-bm25-text-search) [![Coverage Status](https://coveralls.io/repos/github/decisively/wink-bm25-text-search/badge.svg?branch=master)](https://coveralls.io/github/decisively/wink-bm25-text-search?branch=master)
 
@@ -10,7 +10,8 @@
 **wink-bm25-text-search** is a part of **[wink](https://www.npmjs.com/~sanjaya)**, which is a family of Machine Learning NPM packages. They consist of simple and/or higher order functions that can be combined with NodeJS `stream` and `child processes` to create recipes for analytics driven business solutions.
 
 
-Easily index documents to perform semantic search using **wink-bm25-text-search**. It's [API](#api) offers a rich set of features:
+Easily build in-memory semantic search using **wink-bm25-text-search**. It is based on one of the most popular text-retrieval algorithm — BM25F — a Probabilistic Relevance Framework (PRF) for document retrieval.
+It's [API](#api) offers a rich set of features:
 
 
 ## Installation
