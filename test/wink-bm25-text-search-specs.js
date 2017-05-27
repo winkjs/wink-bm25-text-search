@@ -26,7 +26,7 @@ var chai = require( 'chai' );
 var mocha = require( 'mocha' );
 var bm25 = require( '../src/wink-bm25-text-search.js' );
 var prepare = require( 'wink-nlp-utils' );
-var docs = require( './toy-data-for-wink-bm25.json' );
+var docs = require( '../sample-data/data-for-wink-bm25.json' );
 
 var expect = chai.expect;
 var describe = mocha.describe;
@@ -84,6 +84,16 @@ describe( 'complete clean workflow test', function () {
       prepare.tokens.removeWords,
       prepare.tokens.stem ], 'body' ],
       expectedOutputIs: 6
+    },
+    {
+      whenInputIs: [ [
+      prepare.string.lowerCase,
+      prepare.string.removeExtraSpaces,
+      prepare.string.tokenize0,
+      prepare.tokens.propagateNegations,
+      prepare.tokens.removeWords,
+      prepare.tokens.stem ], 'search' ],
+      expectedOutputIs: 6
     }
   ];
 
@@ -96,13 +106,14 @@ describe( 'complete clean workflow test', function () {
   it( 'defineConfig should return true when proper config is passed', function () {
     var config = {
       fldWeights: {
-         title: 3,
+         title: 4,
          body: 1,
-         tags: 4
+         tags: 2
        },
        bm25Params: {
-          k: 2,
-          b: 0.1
+          k1: 1.2,
+          k: 1,
+          b: 0.75
         }
       };
     expect( bts.defineConfig( config ) ).to.equal( true );
@@ -118,9 +129,43 @@ describe( 'complete clean workflow test', function () {
     expect( bts.consolidate( ) ).to.equal( true );
   } );
 
-  it( 'search should return \n\t' + docs[ 0 ].body, function () {
-    var text = 'Barack Hussein Obama II born August 4, 1961 is an American politician who served as the 44th President of the United States from 2009 to 2017. He is the first African American to have served as president. He previously served in the U.S. Senate representing Illinois from 2005 to 2008, and in the Illinois State Senate from 1997 to 2004.';
-    expect( docs[ bts.search( 'who is married to barack' )[ 0 ][ 0 ] ].body ).to.equal( text );
+  var text = 'Michelle LaVaughn Robinson Obama (born January 17, 1964) is an American lawyer and writer who was First Lady of the United States from 2009 to 2017. She is married to the 44th President of the United States, Barack Obama, and was the first African-American First Lady. Raised on the South Side of Chicago, Illinois, Obama is a graduate of Princeton University and Harvard Law School, and spent her early legal career working at the law firm Sidley Austin, where she met her husband. She subsequently worked as the Associate Dean of Student Services at the University of Chicago and the Vice President for Community and External Affairs of the University of Chicago Medical Center. Barack and Michelle married in 1992 and have two daughters.';
+
+  it( 'search should return \n\t' + docs[ 1 ].body, function () {
+    expect( docs[ bts.search( 'whoes husband is barack' )[ 0 ][ 0 ] ].body ).to.equal( text );
   } );
 
+  var json;
+  it( 'exportJSON should return valid json', function () {
+    json = bts.exportJSON( );
+    expect( typeof JSON.stringify( json ) ).to.equal( 'string' );
+  } );
+
+  it( 'reset should return true', function () {
+    expect( bts.reset( ) ).to.equal( true );
+  } );
+
+  it( 'post reset, consolidate should throw error', function () {
+    expect( bts.consolidate.bind( null) ).to.throw( 'winkBM25S: document collection is too small for consolidation; add more docs!' );
+  } );
+
+  it( 'post reset, even search should throw error', function () {
+    expect( bts.search.bind( null, 'whoes husband is barack' ) ).to.throw( 'winkBM25S: search is not possible unless learnings are consolidated!' );
+  } );
+
+  it( 'importJSON should return true', function () {
+    expect( bts.importJSON( json ) ).to.equal( true );
+  } );
+
+  it( 'post import, search should throw error', function () {
+    expect( bts.search.bind( null, 'whoes husband is barack' ) ).to.throw( 'winkBM25S: search is not possible unless learnings are consolidated!' );
+  } );
+
+  it( 'now consolidate should return true', function () {
+    expect( bts.consolidate( ) ).to.equal( true );
+  } );
+
+  it( 'search should once again return \n\t' + docs[ 1 ].body, function () {
+    expect( docs[ bts.search( 'who is married to barack' )[ 0 ][ 0 ] ].body ).to.equal( text );
+  } );
 } );

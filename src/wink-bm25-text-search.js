@@ -285,12 +285,16 @@ var bm25fIMS = function () {
         // Update frequency but ensure the sign is carefully preserved as the
         // magnitude of `k1` can jeopardize the sign!
         documents[ id ].freq[ t ] = Math.sign( freq ) * Math.abs( ( freq * ( k1 + 1 ) ) / ( ( k1 * normalizationFactor ) + freq ) );
+        // To be uncommented to probe values!
+        // console.log( '%s, %s, %d', id, t, documents[ id ].freq[ t ] );
       }
     }
     // Consolidate: compute idf.
     for ( t in invertedIdx ) {
       n = invertedIdx[ t ].length;
-      idf[ t ] = Math.log( ( ( totalDocs - n ) / n ) + k );
+      idf[ t ] = Math.log( ( ( totalDocs - n ) / totalDocs ) + k );
+      // To be uncommented to probe values!
+      // console.log( '%s, %d, %d, %d, %d', t, totalDocs, n, k, idf[ t ] );
     }
     // Set `consolidated` as `true`.
     consolidated = true;
@@ -329,6 +333,8 @@ var bm25fIMS = function () {
         for ( i = 0, imax = ids.length; i < imax; i += 1 ) {
           id = ids[ i ];
           results[ id ] = ( documents[ id ].freq[ t ] * idf[ t ] ) + ( results[ id ] || 0 );
+          // To be uncommented to probe values!
+          /* console.log( '%s, %d, %d, %d', t, documents[ id ].freq[ t ], idf[ t ], results[ id ] ); */
         }
       }
     }
