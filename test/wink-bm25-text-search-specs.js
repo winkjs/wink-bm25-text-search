@@ -35,16 +35,17 @@ var it = mocha.it;
 describe( 'definePrepTasks() Error Cases', function () {
   var bts = bm25();
   var prepTasks = [
-    { whenInputIs: [ prepare.string.incorrect, prepare.string.lowerCase ], expectedOutputIs: 'winkBM25S: Tasks should contain function, instead found: undefined' },
-    { whenInputIs: null, expectedOutputIs: 'winkBM25S: Tasks should be an array, instead found: null' },
-    { whenInputIs: undefined, expectedOutputIs: 'winkBM25S: Tasks should be an array, instead found: undefined' },
-    { whenInputIs: 1, expectedOutputIs: 'winkBM25S: Tasks should be an array, instead found: 1' },
-    { whenInputIs: { a: 3 }, expectedOutputIs: 'winkBM25S: Tasks should be an array, instead found: {"a":3}' }
+    { whenInputIs: [ [ prepare.string.incorrect, prepare.string.lowerCase ] ], expectedOutputIs: 'winkBM25S: Tasks should contain function, instead found: undefined' },
+    { whenInputIs: [ [ prepare.string.lowerCase ], {} ], expectedOutputIs: 'winkBM25S: Field should be string, instead found: object' },
+    { whenInputIs: [ null ], expectedOutputIs: 'winkBM25S: Tasks should be an array, instead found: null' },
+    { whenInputIs: [ undefined ], expectedOutputIs: 'winkBM25S: Tasks should be an array, instead found: undefined' },
+    { whenInputIs: [ 1 ], expectedOutputIs: 'winkBM25S: Tasks should be an array, instead found: 1' },
+    { whenInputIs: [ { a: 3 } ], expectedOutputIs: 'winkBM25S: Tasks should be an array, instead found: {"a":3}' },
   ];
 
   prepTasks.forEach( function ( ptask ) {
     it( 'should throw "' + ptask.expectedOutputIs + '" if the input is ' + JSON.stringify( ptask.whenInputIs ), function () {
-      expect( bts.definePrepTasks.bind( null, ptask.whenInputIs, undefined ) ).to.throw( ptask.expectedOutputIs );
+      expect( bts.definePrepTasks.bind( null, ptask.whenInputIs[ 0 ], ptask.whenInputIs[ 1 ] ) ).to.throw( ptask.expectedOutputIs );
     } );
   } );
 } );
@@ -83,16 +84,6 @@ describe( 'complete clean workflow test', function () {
       prepare.tokens.propagateNegations,
       prepare.tokens.removeWords,
       prepare.tokens.stem ], 'body' ],
-      expectedOutputIs: 6
-    },
-    {
-      whenInputIs: [ [
-      prepare.string.lowerCase,
-      prepare.string.removeExtraSpaces,
-      prepare.string.tokenize0,
-      prepare.tokens.propagateNegations,
-      prepare.tokens.removeWords,
-      prepare.tokens.stem ], 'search' ],
       expectedOutputIs: 6
     }
   ];
@@ -167,5 +158,100 @@ describe( 'complete clean workflow test', function () {
 
   it( 'search should once again return \n\t' + docs[ 1 ].body, function () {
     expect( docs[ bts.search( 'who is married to barack' )[ 0 ][ 0 ] ].body ).to.equal( text );
+  } );
+} );
+
+describe( 'defineConfig() Error Cases', function () {
+  var bts = bm25();
+  var prepTasks = [
+    { whenInputIs: [ prepare.string.tokenize0, prepare.string.stem ], expectedOutputIs: 2 },
+    { whenInputIs: [ ], expectedOutputIs: 0 }
+  ];
+
+  prepTasks.forEach( function ( ptask ) {
+    it( 'should return "' + ptask.expectedOutputIs + '" if the input is ' + JSON.stringify( ptask.whenInputIs ), function () {
+      expect( bts.definePrepTasks( ptask.whenInputIs ) ).to.equal( ptask.expectedOutputIs );
+    } );
+  } );
+
+  it( 'should return true if the input is ', function () {
+    expect( bts.addDoc.bind( null, { fail: 'why fail?' } ) ).to.throw( 'winkBM25S: Config must be defined before adding a document.' );
+  } );
+
+  var configs1 = [
+    { whenInputIs: null, expectedOutputIs: 'winkBM25S: config must be a config object, instead found: null' },
+    { whenInputIs: undefined, expectedOutputIs: 'winkBM25S: config must be a config object, instead found: undefined' },
+    { whenInputIs: new Set([]), expectedOutputIs: 'winkBM25S: config must be a config object, instead found: {}' },
+    { whenInputIs: {}, expectedOutputIs: 'winkBM25S: fldWeights must be an object, instead found: undefined' },
+    { whenInputIs: { fldWeights: {} }, expectedOutputIs: 'winkBM25S: Field config has no field defined.' },
+    { whenInputIs: { fldWeights: { fail: {} } }, expectedOutputIs: 'winkBM25S: Field weight should be number, instead found: {}' },
+  ];
+
+  configs1.forEach( function ( cfg ) {
+    it( 'should throw "' + cfg.expectedOutputIs + '" if the input is ' + JSON.stringify( cfg.whenInputIs ), function () {
+      expect( bts.defineConfig.bind( null, cfg.whenInputIs ) ).to.throw( cfg.expectedOutputIs );
+    } );
+  } );
+
+  var configs2 = [
+    { whenInputIs: { fldWeights: { fail: 3 } }, expectedOutputIs: true },
+  ];
+
+  configs2.forEach( function ( cfg ) {
+    it( 'should return true if the input is ' + JSON.stringify( cfg.whenInputIs ), function () {
+      expect( bts.defineConfig( cfg.whenInputIs ) ).to.equal( true );
+    } );
+  } );
+
+  it( 'should return true if the input is ', function () {
+    expect( bts.addDoc( { fail: 'why fail?' }, 1 ) ).to.equal( 1 );
+  } );
+
+  it( 'should return true if the input is ', function () {
+    expect( bts.addDoc.bind( null, { fail: 'why fail?' }, 1 ) ).to.throw( 'winkBM25S: Duplicate document encountered: 1' );
+  } );
+
+  it( 'should return true if the input is ', function () {
+    expect( bts.addDoc( { fail: 'why pass?' }, 2 ) ).to.equal( 2 );
+  } );
+
+  it( 'should return true if the input is ', function () {
+    expect( bts.addDoc( { fail: 'why not pass?' }, 3 ) ).to.equal( 3 );
+  } );
+
+  it( 'should return true if the input is ', function () {
+    expect( bts.addDoc.bind( null, { pass: 'why not pass?' }, 9 ) ).to.throw( 'winkBM25S: Missing field in the document: "fail"' );
+  } );
+
+  it( 'should return true if the input is ', function () {
+    expect( bts.defineConfig.bind( null, { fldWeights: { fail: 3 } } ) ).to.throw( 'winkBM25S: config must be defined before learning/addition starts!' );
+  } );
+
+  it( 'consolidate should return true, prep to test addDoc post this', function () {
+    expect( bts.consolidate( ) ).to.equal( true );
+  } );
+
+  it( 'should throw error if attempt to addDoc is made', function () {
+    expect( bts.addDoc.bind( null, { fail: 3 }, 4 ) ).to.throw( 'winkBM25S: post consolidation adding/learning is not possible!' );
+  } );
+
+  it( 'should throw error if attempt to search not string is made', function () {
+    expect( bts.search.bind( null, { fail: 3 } ) ).to.throw( 'winkBM25S: search text should be a string, instead found: object' );
+  } );
+
+  it( 'importJSON should throw error when null is passed', function () {
+    expect( bts.importJSON.bind( null, null ) ).to.throw( 'winkBM25S: undefined or null JSON encountered, import failed!' );
+  } );
+
+  it( 'importJSON should throw error when invalid json is passed i.e. {}', function () {
+    expect( bts.importJSON.bind( null, '{}' ) ).to.throw( 'winkBM25S: invalid JSON encountered, can not import.' );
+  } );
+
+  it( 'importJSON should throw error when invalid json is passed i.e. [] - incorrect length', function () {
+    expect( bts.importJSON.bind( null, '[]' ) ).to.throw( 'winkBM25S: invalid JSON encountered, can not import.' );
+  } );
+
+  it( 'importJSON should throw error when invalid json is passed i.e. [ 1,.. ] - incorrect elements', function () {
+    expect( bts.importJSON.bind( null, '[ 1, 1, 1, 1 ]' ) ).to.throw( 'winkBM25S: invalid JSON encountered, can not import.' );
   } );
 } );

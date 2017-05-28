@@ -165,11 +165,11 @@ var bm25fIMS = function () {
       throw Error( 'winkBM25S: config must be defined before learning/addition starts!' );
     }
     if ( !helpers.object.isObject( cfg ) ) {
-      throw Error( 'winkBM25S: config must be an object, instead found: ' + ( typeof cfg ) );
+      throw Error( 'winkBM25S: config must be a config object, instead found: ' + JSON.stringify( cfg ) );
     }
     // If `fldWeights` are absent throw error.
     if ( !helpers.object.isObject( cfg.fldWeights ) ) {
-      throw Error( 'winkBM25S: config must be an object, instead found: ' + ( typeof cfg.fldWeights ) );
+      throw Error( 'winkBM25S: fldWeights must be an object, instead found: ' + JSON.stringify( cfg.fldWeights ) );
     }
     // There should be at least one defined field!
     if ( ( helpers.object.keys( cfg.fldWeights ) ).length === 0 ) {
@@ -232,10 +232,10 @@ var bm25fIMS = function () {
 
   // Adds a document to the model using `updateFreq()` function.
   var addDoc = function ( doc, id ) {
-    var fldWeights = config.fldWeights;
     if ( config === null ) {
       throw Error( 'winkBM25S: Config must be defined before adding a document.' );
     }
+    var fldWeights = config.fldWeights;
     // No point in adding/learning further in absence of consolidated.
     if ( consolidated ) {
       throw Error( 'winkBM25S: post consolidation adding/learning is not possible!' );
@@ -251,7 +251,7 @@ var bm25fIMS = function () {
     documents[ id ].length = 0;
     for ( var field in fldWeights ) {
       if ( doc[ field ] === undefined ) {
-        throw Error( 'winkBM25S: Undefined field in the document: ' + JSON.stringify( field ) );
+        throw Error( 'winkBM25S: Missing field in the document: ' + JSON.stringify( field ) );
       }
       length = updateFreq( id, doc[ field ], fldWeights[ field ], documents[ id ].freq, field );
       documents[ id ].length += length;
