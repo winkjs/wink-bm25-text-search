@@ -1,7 +1,7 @@
 
 # wink-bm25-text-search
 
-> Configurable [BM25](http://opensourceconnections.com/blog/2015/10/16/bm25-the-next-generation-of-lucene-relevation/) Text Search Engine with [simple semantic search](http://opensourceconnections.com/blog/2016/10/19/bm25f-in-lucene/) support
+> Configurable [BM25](http://opensourceconnections.com/blog/2015/10/16/bm25-the-next-generation-of-lucene-relevation/) Text Search Engine with simple semantic search support
 
 ### [![Build Status](https://api.travis-ci.org/decisively/wink-bm25-text-search.svg?branch=master)](https://travis-ci.org/decisively/wink-bm25-text-search) [![Coverage Status](https://coveralls.io/repos/github/decisively/wink-bm25-text-search/badge.svg?branch=master)](https://coveralls.io/github/decisively/wink-bm25-text-search?branch=master)
 
@@ -46,25 +46,27 @@ npm install wink-bm25-text-search --save
 
 // Load wink-bm25-text-search
 var bm25 = require( 'wink-bm25-text-search' )();
+// Load NLP utilities
+var nlp = require( 'wink-nlp-utils' );
 // Load sample data
 var docs = require( './node_modules/wink-bm25-text-search/sample-data/data-for-wink-bm25.json' );
 
 // Set up preparatory tasks for 'body' field
 bm25.definePrepTasks( [
-  prepare.string.lowerCase,
-  prepare.string.removeExtraSpaces,
-  prepare.string.tokenize0,
-  prepare.tokens.propagateNegations,
-  prepare.tokens.removeWords,
-  prepare.tokens.stem
+  nlp.string.lowerCase,
+  nlp.string.removeExtraSpaces,
+  nlp.string.tokenize0,
+  nlp.tokens.propagateNegations,
+  nlp.tokens.removeWords,
+  nlp.tokens.stem
 ], 'body' );
 // Set up 'default' preparatory tasks i.e. for everything else
 bm25.definePrepTasks( [
-  prepare.string.lowerCase,
-  prepare.string.removeExtraSpaces,
-  prepare.string.tokenize0,
-  prepare.tokens.propagateNegations,
-  prepare.tokens.stem
+  nlp.string.lowerCase,
+  nlp.string.removeExtraSpaces,
+  nlp.string.tokenize0,
+  nlp.tokens.propagateNegations,
+  nlp.tokens.stem
 ] );
 // Define BM25 configuration
 bm25.defineConfig( {
@@ -85,6 +87,40 @@ var results = bm25.search( 'who is married to barack' );
 ```
 
 ## API
+
+#### definePrepTasks( tasks [, field ] )
+
+Defines the text preparation `tasks` to transform raw incoming text into an array of tokens required during `addDoc()`, and `search()` operations. The `tasks` should be an array of functions. The first function in this array must accept a string as input; and the last function must return an array of tokens as JavaScript Strings. Each function must accept one input argument and return a single value. `definePrepTasks` returns the count of `tasks`. The second argument — `field` is optional. It defines the `field` of the document for which the `tasks` will be defined; in absence of this argument, the `tasks` become the default for everything else.
+
+As illustrated in the usage, [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) offers a rich set of such functions.
+
+#### defineConfig( config )
+Defines the configuration from the `config` object. This object must define 2 properties viz. (a) `fldWeights` and `bm25Params`. The `fldWeights` is an object where each *key* is the *document's field name* and the *value* is the *numerical weight* i.e. the importance of that field. The `bm25Params` is also an object that defines upto 3 keys viz. `k1`, `b`, and `k`. Thier default values are respectively **1.2**, **0.75**, and **1**.
+
+#### addDoc( doc, uniqueId )
+Simply adds the `doc` with the `uniqueId` to the BM25 model. If the input is a JavaScript String, then `definePrepTasks()` must be called before learning. Similarly `defineConfig()` must also be called before this operation.
+
+It has an alias `learn( doc, uniqueId )` to maintain API level uniformity across various [wink](https://www.npmjs.com/~sanjaya) packages such as [wink-naive-bayes-text-classifier](https://www.npmjs.com/package/wink-naive-bayes-text-classifier).
+
+
+#### consolidate()
+Consolidates the BM25 model for all the added documents. It is a prerequisite for `search()`.
+
+#### search( text [, limit ] )
+Searches for the `text` and returns upto the `limit` number of results. The result is an array of
+`[ uniqueId, relevanceScore ]`, sorted on the `relevanceScore`. The default value of `limit` is **10**.
+
+Like `addDoc()`, tt also has an alias `predict( doc, uniqueId )` to maintain API level uniformity across various [wink](https://www.npmjs.com/~sanjaya) packages such as [wink-naive-bayes-text-classifier](https://www.npmjs.com/package/wink-naive-bayes-text-classifier).
+
+
+#### exportJSON()
+The BM25 model can be exported as JSON text that may be saved in a file.
+
+#### importJSON( json )
+An existing JSON BM25 model can be imported for search. It is essential to `definePrepTasks()` and `consolidate()` before attempting to search.
+
+#### reset()
+It completely resets the BM25 model by re-initializing all the variables, except the preparatory tasks.
 
 
 ## Need Help?
