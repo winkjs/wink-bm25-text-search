@@ -10,8 +10,26 @@
 **wink-bm25-text-search** is a part of **[wink](https://www.npmjs.com/~sanjaya)**, which is a family of Machine Learning NPM packages. They consist of simple and/or higher order functions that can be combined with NodeJS `stream` and `child processes` to create recipes for analytics driven business solutions.
 
 
-Easily build in-memory semantic search using **wink-bm25-text-search**. It is based on one of the most popular text-retrieval algorithm — BM25F — a Probabilistic Relevance Framework (PRF) for document retrieval.
+Easily add *in-memory semantic search* to your application using **wink-bm25-text-search**. It is based on one of the most popular text-retrieval algorithm — BM25F — a Probabilistic Relevance Framework (PRF) for document retrieval. It accepts structured JSON documents as input for creating the model. Following is an example document structure of the sample data JSON contained in this package:
+```
+{
+  title:  'Barack Obama',
+  body: 'Barack Hussein Obama II born August 4, 1961 is an American politician...'
+  tags: 'democratic nobel peace prize columbia michelle...'
+}
+```
+
+The sample data is created using excerpts from [Wikipedia](https://en.wikipedia.org/wiki/Main_Page) articles such as one on [Barack Obama](https://en.wikipedia.org/wiki/Barack_Obama).
+
 It's [API](#api) offers a rich set of features:
+
+1. Configure text preparation task such as *amplify negation*, *tokenize*, *stem*, *remove stop words*, and *propagate negation* using [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) or any other package of your choice.
+2. Add semantic flavor to the search by:
+    1. Defining the text preparation tasks separately for (a) each field (e.g. body or tags), (b) search string, and \(c\) a default for everything else.
+    2. Assigning different degree of importance to every field in terms of a numerical weight.
+3. Configure all the BM25 parameters — (a) **`k1`** to control TF saturation, (b) **`b`** to control degree of normalization, and \(c\) **`k`** to manage IDF.
+4. Export and import learnings from the added documents in a JSON format that can be easily saved on hard-disk.
+
 
 
 ## Installation
@@ -27,7 +45,7 @@ npm install wink-bm25-text-search --save
 ```javascript
 
 // Load wink-bm25-text-search
-var nlp = require( 'wink-bm25-text-search' );
+var bm25 = require( 'wink-bm25-text-search' )();
 
 
 ```
