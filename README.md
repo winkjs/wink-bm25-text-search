@@ -44,11 +44,11 @@ npm install wink-bm25-text-search --save
 
 ```javascript
 // Load wink-bm25-text-search
-var bm25 = require( './wink-bm25-text-search' )();
+var bm25 = require( 'wink-bm25-text-search' )();
 // Load NLP utilities
 var nlp = require( 'wink-nlp-utils' );
-// Load sample data
-var docs = require( './data-for-wink-bm25.json' );
+// Load sample data (load any other JSON data instead of sample)
+var docs = require( './node_modules/wink-bm25-text-search/sample-data/data-for-wink-bm25.json' );
 // Set up preparatory tasks for 'body' field
 bm25.definePrepTasks( [
   nlp.string.lowerCase,
