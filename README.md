@@ -13,7 +13,7 @@
 Easily add *in-memory semantic search* to your application using **wink-bm25-text-search**. It is based on one of the most popular text-retrieval algorithm — BM25F — a Probabilistic Relevance Framework (PRF) for document retrieval. It accepts structured JSON documents as input for creating the model. Following is an example document structure of the sample data JSON contained in this package:
 ```
 {
-  title:  'Barack Obama',
+  title: 'Barack Obama',
   body: 'Barack Hussein Obama II born August 4, 1961 is an American politician...'
   tags: 'democratic nobel peace prize columbia michelle...'
 }
@@ -46,8 +46,42 @@ npm install wink-bm25-text-search --save
 
 // Load wink-bm25-text-search
 var bm25 = require( 'wink-bm25-text-search' )();
+// Load sample data
+var docs = require( './node_modules/wink-bm25-text-search/sample-data/data-for-wink-bm25.json' );
 
+// Set up preparatory tasks for 'body' field
+bm25.definePrepTasks( [
+  prepare.string.lowerCase,
+  prepare.string.removeExtraSpaces,
+  prepare.string.tokenize0,
+  prepare.tokens.propagateNegations,
+  prepare.tokens.removeWords,
+  prepare.tokens.stem
+], 'body' );
+// Set up 'default' preparatory tasks i.e. for everything else
+bm25.definePrepTasks( [
+  prepare.string.lowerCase,
+  prepare.string.removeExtraSpaces,
+  prepare.string.tokenize0,
+  prepare.tokens.propagateNegations,
+  prepare.tokens.stem
+] );
+// Define BM25 configuration
+bm25.defineConfig( {
+    fldWeights: { title: 4, body: 1, tags: 2 },
+    bm25Params: { k1: 1.2, k: 1, b: 0.75
+} );
+// Add documents now...
+docs.forEach( function ( doc, i ) {
+  // Note, 'i' becomes the unique id for 'doc'
+  bm25.addDoc( doc, i );
+} );
+// All set, start searching!
+var results = bm25.search( 'who is married to barack' );
+// results is an array of [ doc-id, score ], sorted by score
+// results[ 0 ][ 0 ].body i.e. the top result is:
 
+// -> Michelle LaVaughn Robinson Obama (born January 17, 1964) is...
 ```
 
 ## API
