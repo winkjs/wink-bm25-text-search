@@ -39,7 +39,7 @@ npm install wink-bm25-text-search --save
 ```
 
 
-## Usage
+## Example [![Build Status](https://badge.runkitcdn.com/wink-bm25-text-search.svg)](https://npm.runkit.com/wink-bm25-text-search)
 
 
 ```javascript
@@ -48,7 +48,7 @@ var bm25 = require( 'wink-bm25-text-search' )();
 // Load NLP utilities
 var nlp = require( 'wink-nlp-utils' );
 // Load sample data (load any other JSON data instead of sample)
-var docs = require( './node_modules/wink-bm25-text-search/sample-data/data-for-wink-bm25.json' );
+var docs = require( 'wink-bm25-text-search/sample-data/data-for-wink-bm25.json' );
 // Set up preparatory tasks for 'body' field
 bm25.definePrepTasks( [
   nlp.string.lowerCase,

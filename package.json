@@ -19,8 +19,8 @@
     "test": "istanbul cover _mocha ./test/",
     "coveralls": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "docs": "docco -o ./docs/ ./src/*.js",
-    "hint": "jshint ./src/*.js ./test/*.js",
-    "lint": "eslint ./src/*.js ./test/*.js"
+    "hint": "jshint ./src/*.js ./test/*.js ./runkit/*.js",
+    "lint": "eslint ./src/*.js ./test/*.js ./runkit/*.js"
   },
   "repository": {
     "type": "git",
@@ -45,5 +45,6 @@
   },
   "dependencies": {
     "wink-helpers": "^1.0.0"
-  }
+  },
+  "runkitExampleFilename": "runkit/example.js"
 }
