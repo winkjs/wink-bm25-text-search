@@ -39,7 +39,7 @@ npm install wink-bm25-text-search --save
 ```
 
 
-## Example [![Build Status](https://badge.runkitcdn.com/wink-bm25-text-search.svg)](https://npm.runkit.com/wink-bm25-text-search)
+## Example [![Try on Runkit](https://badge.runkitcdn.com/wink-bm25-text-search.svg)](https://npm.runkit.com/wink-bm25-text-search)
 
 
 ```javascript
