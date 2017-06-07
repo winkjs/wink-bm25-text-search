@@ -3,7 +3,7 @@
 
 > Configurable [BM25](http://opensourceconnections.com/blog/2015/10/16/bm25-the-next-generation-of-lucene-relevation/) Text Search Engine with simple semantic search support
 
-### [![Build Status](https://api.travis-ci.org/decisively/wink-bm25-text-search.svg?branch=master)](https://travis-ci.org/decisively/wink-bm25-text-search) [![Coverage Status](https://coveralls.io/repos/github/decisively/wink-bm25-text-search/badge.svg?branch=master)](https://coveralls.io/github/decisively/wink-bm25-text-search?branch=master) [![dependencies Status](https://david-dm.org/decisively/wink-bm25-text-search/status.svg)](https://david-dm.org/decisively/wink-bm25-text-search) [![devDependencies Status](https://david-dm.org/decisively/wink-bm25-text-search/dev-status.svg)](https://david-dm.org/decisively/wink-bm25-text-search?type=dev)
+### [![Build Status](https://api.travis-ci.org/decisively/wink-bm25-text-search.svg?branch=master)](https://travis-ci.org/decisively/wink-bm25-text-search) [![Coverage Status](https://coveralls.io/repos/github/decisively/wink-bm25-text-search/badge.svg?branch=master)](https://coveralls.io/github/decisively/wink-bm25-text-search?branch=master) [![Inline docs](http://inch-ci.org/github/decisively/wink-bm25-text-search.svg?branch=master)](http://inch-ci.org/github/decisively/wink-bm25-text-search) [![dependencies Status](https://david-dm.org/decisively/wink-bm25-text-search/status.svg)](https://david-dm.org/decisively/wink-bm25-text-search) [![devDependencies Status](https://david-dm.org/decisively/wink-bm25-text-search/dev-status.svg)](https://david-dm.org/decisively/wink-bm25-text-search?type=dev)
 
 <img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
 
@@ -23,7 +23,7 @@ The sample data is created using excerpts from [Wikipedia](https://en.wikipedia.
 
 It's [API](#api) offers a rich set of features:
 
-1. Configure text preparation task such as *amplify negation*, *tokenize*, *stem*, *remove stop words*, and *propagate negation* using [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) or any other package of your choice.
+1. Configure text preparation task such as *amplify negation*, *tokenize*, *stem*, *remove stop words*, and *propagate negation* using **[wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils)** or any other package of your choice.
 2. Add semantic flavor to the search by:
     1. Defining the text preparation tasks separately for (a) each field (e.g. body or tags), (b) search string, and \(c\) a default for everything else.
     2. Assigning different degree of importance to every field in terms of a numerical weight.
