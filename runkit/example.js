@@ -23,9 +23,7 @@ bm25.definePrepTasks( [
   nlp.tokens.stem
 ] );
 // Define BM25 configuration
-bm25.defineConfig( {
-    fldWeights: { title: 4, body: 1, tags: 2 }
-} );
+bm25.defineConfig( { fldWeights: { title: 4, body: 1, tags: 2 } } );
 // Add documents now...
 docs.forEach( function ( doc, i ) {
   // Note, 'i' becomes the unique id for 'doc'
