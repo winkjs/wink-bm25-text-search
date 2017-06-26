@@ -15,7 +15,7 @@ It is based on one of the most popular text-retrieval algorithm — BM25F — a 
 2. **Add semantic flavor** to the search by:
     1. Defining the text preparation tasks separately for (a) each document field (e.g. body or tags), (b) search string, and \(c\) a default for everything else.
     2. Assigning different degree of importance to every field in terms of a numerical weight. Note, a negative field weight will pull down the document's score whenever a match with that field occurs.
-    3. Using `amplifyNegation()` and `propagateNegations()` in text preparation to distinguish between search for query text containing **good** and **not good**.
+    3. Using `amplifyNegation()` and `propagateNegations()` of [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) in text preparation to ensure different search results from query texts containing **"good"** and **"not good"**.
 3. **Full control over BM25 configuration** — while default values work well for most situations, there is an option to control them — (a) **`k1`** to control TF saturation, (b) **`b`** to control degree of normalization, and \(c\) **`k`** to manage IDF.
 4. **Index optimized for size and speed** can be exported (and imported) from the added documents in a JSON format.
 5. **Search for exact values of pre-defined fields**, makes search results more relevant.
@@ -85,7 +85,7 @@ Defines the text preparation `tasks` to transform raw incoming text into an arra
 As illustrated in the usage, [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) offers a rich set of such functions.
 
 #### defineConfig( config )
-Defines the configuration from the `config` object. This object must define 2 properties viz. (a) `fldWeights` and `bm25Params`. The `fldWeights` is an object where each *key* is the *document's field name* and the *value* is the *numerical weight* i.e. the importance of that field. The `bm25Params` is also an object that defines upto 3 keys viz. `k1`, `b`, and `k`. Thier default values are respectively **1.2**, **0.75**, and **1**.
+Defines the configuration from the `config` object. This object defines 3 properties viz. (a) `fldWeights`, `bm25Params` and `ovFieldNames`. The `fldWeights` is an object where each *key* is the *document's field name* and the *value* is the *numerical weight* i.e. the importance of that field. It must be defined. The `bm25Params` (optional) is also an object that defines upto 3 keys viz. `k1`, `b`, and `k`. Thier default values are respectively **1.2**, **0.75**, and **1**. The `ovFieldNames` (optional) is an array containing the names of the fields, whose original value must be retained. This should be define if search on exact field values is required.
 
 #### addDoc( doc, uniqueId )
 Simply adds the `doc` with the `uniqueId` to the BM25 model. If the input is a JavaScript String, then `definePrepTasks()` must be called before learning. Similarly `defineConfig()` must also be called before this operation.
@@ -102,21 +102,24 @@ It accepts structured JSON documents as input for creating the model. Following 
 ```
 The sample data is created using excerpts from [Wikipedia](https://en.wikipedia.org/wiki/Main_Page) articles such as one on [Barack Obama](https://en.wikipedia.org/wiki/Barack_Obama).
 
-#### consolidate()
-Consolidates the BM25 model for all the added documents. It is a prerequisite for `search()`.
+#### consolidate( precision )
+Consolidates the BM25 model for all the added documents. The `precision` defines the the precision at
+which term frequency values are stored. The default value is 4 and is good enough for most situations. It is a prerequisite for `search()` and documents can not be added post consolidation.
 
-#### search( text [, limit ] )
-Searches for the `text` and returns upto the `limit` number of results. The result is an array of
+#### search( text [, limit, filter, params ] )
+Searches for the `text` and returns upto the `limit` number of results. The `filter` should be a function that must return true or false based on `params`. Think of it as Javascript Array's filter function. Both `filter` and `params` are optional.
+
+The result is an array of
 `[ uniqueId, relevanceScore ]`, sorted on the `relevanceScore`. The default value of `limit` is **10**.
 
-Like `addDoc()`, tt also has an alias `predict( doc, uniqueId )` to maintain API level uniformity across various [wink](https://www.npmjs.com/~sanjaya) packages such as [wink-naive-bayes-text-classifier](https://www.npmjs.com/package/wink-naive-bayes-text-classifier).
+Like `addDoc()`, it also has an alias `predict( doc, uniqueId )` to maintain API level uniformity across various [wink](https://www.npmjs.com/~sanjaya) packages such as [wink-naive-bayes-text-classifier](https://www.npmjs.com/package/wink-naive-bayes-text-classifier).
 
 
 #### exportJSON()
-The BM25 model can be exported as JSON text that may be saved in a file.
+The BM25 model can be exported as JSON text that may be saved in a file. It is a good idea to export JSON prior to consolidation and use the same whenever more documents need to be added; whereas JSON exported after consolidation is only good for search operation.
 
 #### importJSON( json )
-An existing JSON BM25 model can be imported for search. It is essential to `definePrepTasks()` and `consolidate()` before attempting to search.
+An existing JSON BM25 model can be imported for search. It is essential to call `definePrepTasks()` before attempting to search.
 
 #### reset()
 It completely resets the BM25 model by re-initializing all the variables, except the preparatory tasks.
