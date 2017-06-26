@@ -24,7 +24,7 @@ engine.definePrepTasks( [
   nlp.tokens.propagateNegations,
   nlp.tokens.stem
 ] );
-// Define BM25 configuration
+// // Define field weights
 engine.defineConfig( { fldWeights: { title: 4, body: 1, tags: 2 } } );
 // Add documents now...
 docs.forEach( function ( doc, i ) {
