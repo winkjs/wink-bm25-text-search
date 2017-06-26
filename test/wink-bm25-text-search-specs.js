@@ -148,12 +148,12 @@ describe( 'complete clean workflow test', function () {
     expect( bts.importJSON( json ) ).to.equal( true );
   } );
 
-  it( 'post import, search should throw error', function () {
-    expect( bts.search.bind( null, 'whoes husband is barack' ) ).to.throw( 'winkBM25S: search is not possible unless learnings are consolidated!' );
+  it( 'post consolidated import, search should return results', function () {
+    expect( docs[ bts.search( 'who is married to barack' )[ 0 ][ 0 ] ].body ).to.equal( text );
   } );
 
-  it( 'now consolidate should return true', function () {
-    expect( bts.consolidate( ) ).to.equal( true );
+  it( 'now consolidate should therefore throw error', function () {
+    expect( bts.consolidate.bind( null) ).to.throw( 'winkBM25S: consolidation can be carried out only once!' );
   } );
 
   it( 'search should once again return \n\t' + docs[ 1 ].body, function () {
@@ -185,6 +185,9 @@ describe( 'defineConfig() Error Cases', function () {
     { whenInputIs: {}, expectedOutputIs: 'winkBM25S: fldWeights must be an object, instead found: undefined' },
     { whenInputIs: { fldWeights: {} }, expectedOutputIs: 'winkBM25S: Field config has no field defined.' },
     { whenInputIs: { fldWeights: { fail: {} } }, expectedOutputIs: 'winkBM25S: Field weight should be number, instead found: {}' },
+    { whenInputIs: { fldWeights: { fail: 2 }, ovFldNames: 3 }, expectedOutputIs: 'winkBM25S: OV Field names should be an array, instead found: "number"' },
+    { whenInputIs: { fldWeights: { fail: 2 }, ovFldNames: [ '' ] }, expectedOutputIs: 'winkBM25S: OV Field name should be a non-empty string, instead found: ""' },
+    { whenInputIs: { fldWeights: { fail: 2 }, ovFldNames: [ 3 ] }, expectedOutputIs: 'winkBM25S: OV Field name should be a non-empty string, instead found: 3' },
   ];
 
   configs1.forEach( function ( cfg ) {
@@ -194,7 +197,7 @@ describe( 'defineConfig() Error Cases', function () {
   } );
 
   var configs2 = [
-    { whenInputIs: { fldWeights: { fail: 3 } }, expectedOutputIs: true },
+    { whenInputIs: { fldWeights: { fail: 3 }, ovFldNames: [ 'broken' ] }, expectedOutputIs: true },
   ];
 
   configs2.forEach( function ( cfg ) {
@@ -203,24 +206,28 @@ describe( 'defineConfig() Error Cases', function () {
     } );
   } );
 
-  it( 'should return true if the input is ', function () {
-    expect( bts.addDoc( { fail: 'why fail?' }, 1 ) ).to.equal( 1 );
+  it( 'should return true if the input is { fail: "why fail?", broken: 2 }, 1', function () {
+    expect( bts.addDoc( { fail: 'why fail?', broken: 2 }, 1 ) ).to.equal( 1 );
   } );
 
-  it( 'should return true if the input is ', function () {
-    expect( bts.addDoc.bind( null, { fail: 'why fail?' }, 1 ) ).to.throw( 'winkBM25S: Duplicate document encountered: 1' );
+  it( 'should return true if the input is  { fail: "why fail?", broken: 2 }, 1 (dup)', function () {
+    expect( bts.addDoc.bind( null, { fail: 'why fail?', broken: 2 }, 1 ) ).to.throw( 'winkBM25S: Duplicate document encountered: 1' );
   } );
 
-  it( 'should return true if the input is ', function () {
-    expect( bts.addDoc( { fail: 'why pass?' }, 2 ) ).to.equal( 2 );
+  it( 'should return true if the input is { fail: "why fail?", broken: 2 }, 2', function () {
+    expect( bts.addDoc( { fail: 'why fail?', broken: 2 }, 2 ) ).to.equal( 2 );
   } );
 
-  it( 'should return true if the input is ', function () {
-    expect( bts.addDoc( { fail: 'why not pass?' }, 3 ) ).to.equal( 3 );
+  it( 'should return true if the input is { fail: "why fail?", broken: 2 }, 3', function () {
+    expect( bts.addDoc( { fail: 'why fail?', broken: 2 }, 3 ) ).to.equal( 3 );
   } );
 
-  it( 'should return true if the input is ', function () {
+  it( 'should return true if the input is { pass: "why not pass?" }, 9', function () {
     expect( bts.addDoc.bind( null, { pass: 'why not pass?' }, 9 ) ).to.throw( 'winkBM25S: Missing field in the document: "fail"' );
+  } );
+
+  it( 'should return true if the input is { fail: "why not pass?", mended: 3 }, 10', function () {
+    expect( bts.addDoc.bind( null, { fail: 'why not pass?', mended: 3 }, 10 ) ).to.throw( 'winkBM25S: Missing field in the document: "broken"' );
   } );
 
   it( 'should return true if the input is ', function () {
@@ -228,7 +235,7 @@ describe( 'defineConfig() Error Cases', function () {
   } );
 
   it( 'consolidate should return true, prep to test addDoc post this', function () {
-    expect( bts.consolidate( ) ).to.equal( true );
+    expect( bts.consolidate( 6 ) ).to.equal( true );
   } );
 
   it( 'should throw error if attempt to addDoc is made', function () {
@@ -252,6 +259,6 @@ describe( 'defineConfig() Error Cases', function () {
   } );
 
   it( 'importJSON should throw error when invalid json is passed i.e. [ 1,.. ] - incorrect elements', function () {
-    expect( bts.importJSON.bind( null, '[ 1, 1, 1, 1 ]' ) ).to.throw( 'winkBM25S: invalid JSON encountered, can not import.' );
+    expect( bts.importJSON.bind( null, '[ 1, 1, 1, 1, 1, 1, 1, 1, 1 ]' ) ).to.throw( 'winkBM25S: invalid JSON encountered, can not import.' );
   } );
 } );

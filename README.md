@@ -1,39 +1,30 @@
 
 # wink-bm25-text-search
 
-> Configurable [BM25](http://opensourceconnections.com/blog/2015/10/16/bm25-the-next-generation-of-lucene-relevation/) Text Search Engine with simple semantic search support
+> Fast Full Text Search based on [BM25](http://opensourceconnections.com/blog/2015/10/16/bm25-the-next-generation-of-lucene-relevation/)
 
 ### [![Build Status](https://api.travis-ci.org/decisively/wink-bm25-text-search.svg?branch=master)](https://travis-ci.org/decisively/wink-bm25-text-search) [![Coverage Status](https://coveralls.io/repos/github/decisively/wink-bm25-text-search/badge.svg?branch=master)](https://coveralls.io/github/decisively/wink-bm25-text-search?branch=master) [![Inline docs](http://inch-ci.org/github/decisively/wink-bm25-text-search.svg?branch=master)](http://inch-ci.org/github/decisively/wink-bm25-text-search) [![dependencies Status](https://david-dm.org/decisively/wink-bm25-text-search/status.svg)](https://david-dm.org/decisively/wink-bm25-text-search) [![devDependencies Status](https://david-dm.org/decisively/wink-bm25-text-search/dev-status.svg)](https://david-dm.org/decisively/wink-bm25-text-search?type=dev)
 
 <img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
 
-**wink-bm25-text-search** is a part of **[wink](https://www.npmjs.com/~sanjaya)**, which is a family of Machine Learning NPM packages. They consist of simple and/or higher order functions that can be combined with NodeJS `stream` and `child processes` to create recipes for analytics driven business solutions.
+Easily add Fast In-memory Semantic Search to your application using **wink-bm25-text-search**. It is a part of [wink](https://www.npmjs.com/~sanjaya) — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.
 
+It is based on one of the most popular text-retrieval algorithm — BM25F — a Probabilistic Relevance Framework for document retrieval. It's [API](#api) offers a rich set of features:
 
-Easily add *in-memory semantic search* to your application using **wink-bm25-text-search**. It is based on one of the most popular text-retrieval algorithm — BM25F — a Probabilistic Relevance Framework (PRF) for document retrieval. It accepts structured JSON documents as input for creating the model. Following is an example document structure of the sample data JSON contained in this package:
-```
-{
-  title: 'Barack Obama',
-  body: 'Barack Hussein Obama II born August 4, 1961 is an American politician...'
-  tags: 'democratic nobel peace prize columbia michelle...'
-}
-```
-
-The sample data is created using excerpts from [Wikipedia](https://en.wikipedia.org/wiki/Main_Page) articles such as one on [Barack Obama](https://en.wikipedia.org/wiki/Barack_Obama).
-
-It's [API](#api) offers a rich set of features:
-
-1. Configure text preparation task such as *amplify negation*, *tokenize*, *stem*, *remove stop words*, and *propagate negation* using **[wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils)** or any other package of your choice.
-2. Add semantic flavor to the search by:
-    1. Defining the text preparation tasks separately for (a) each field (e.g. body or tags), (b) search string, and \(c\) a default for everything else.
-    2. Assigning different degree of importance to every field in terms of a numerical weight.
-3. Configure all the BM25 parameters — (a) **`k1`** to control TF saturation, (b) **`b`** to control degree of normalization, and \(c\) **`k`** to manage IDF.
-4. Export and import learnings from the added documents in a JSON format that can be easily saved on hard-disk.
+1. **Complete flexibility in text preparation** — perform tasks such as tokenization and stemming using [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) or any other package of your choice.
+2. **Add semantic flavor** to the search by:
+    1. Defining the text preparation tasks separately for (a) each document field (e.g. body or tags), (b) search string, and \(c\) a default for everything else.
+    2. Assigning different degree of importance to every field in terms of a numerical weight. Note, a negative field weight will pull down the document's score whenever a match with that field occurs.
+    3. Using `amplifyNegation()` and `propagateNegations()` in text preparation to distinguish between search for query text containing **good** and **not good**.
+3. **Full control over BM25 configuration** — while default values work well for most situations, there is an option to control them — (a) **`k1`** to control TF saturation, (b) **`b`** to control degree of normalization, and \(c\) **`k`** to manage IDF.
+4. **Index optimized for size and speed** can be exported (and imported) from the added documents in a JSON format.
+5. **Search for exact values of pre-defined fields**, makes search results more relevant.
+6. **Scalable Search** allows easy addition of features like **geolocation** and more.
 
 
 
 ## Installation
-Use **[npm](https://www.npmjs.com/package/wink-bm25-text-search)** to install:
+Use [npm](https://www.npmjs.com/package/wink-bm25-text-search) to install:
 ```
 npm install wink-bm25-text-search --save
 ```
@@ -102,6 +93,15 @@ Simply adds the `doc` with the `uniqueId` to the BM25 model. If the input is a J
 
 It has an alias `learn( doc, uniqueId )` to maintain API level uniformity across various [wink](https://www.npmjs.com/~sanjaya) packages such as [wink-naive-bayes-text-classifier](https://www.npmjs.com/package/wink-naive-bayes-text-classifier).
 
+It accepts structured JSON documents as input for creating the model. Following is an example document structure of the sample data JSON contained in this package:
+```
+{
+  title: 'Barack Obama',
+  body: 'Barack Hussein Obama II born August 4, 1961 is an American politician...'
+  tags: 'democratic nobel peace prize columbia michelle...'
+}
+```
+The sample data is created using excerpts from [Wikipedia](https://en.wikipedia.org/wiki/Main_Page) articles such as one on [Barack Obama](https://en.wikipedia.org/wiki/Barack_Obama).
 
 #### consolidate()
 Consolidates the BM25 model for all the added documents. It is a prerequisite for `search()`.

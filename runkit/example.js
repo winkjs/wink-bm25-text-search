@@ -24,8 +24,7 @@ bm25.definePrepTasks( [
 ] );
 // Define BM25 configuration
 bm25.defineConfig( {
-    fldWeights: { title: 4, body: 1, tags: 2 },
-    bm25Params: { k1: 1.2, k: 1, b: 0.75 }
+    fldWeights: { title: 4, body: 1, tags: 2 }
 } );
 // Add documents now...
 docs.forEach( function ( doc, i ) {
