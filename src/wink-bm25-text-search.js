@@ -141,15 +141,25 @@ var bm25fIMS = function () {
   // Note, `field = 'search'` is reserved for prep tasks for search string; However
   // if the same is not specified, the default tasks are used for pre-processing.
   var definePrepTasks = function ( tasks, field ) {
-    if ( !helpers.array.isArray( tasks ) ) throw Error( 'winkBM25S: Tasks should be an array, instead found: ' + JSON.stringify( tasks ) );
-    for ( var i = 0, imax = tasks.length; i < imax; i += 1 ) {
-      if ( typeof tasks[ i ] !== 'function' ) throw Error( 'winkBM25S: Tasks should contain function, instead found: ' + ( typeof tasks[ i ] ) );
+    if ( config === null ) {
+      throw Error( 'winkBM25S: Config must be defined before defining prepTasks.' );
     }
+    if ( !helpers.array.isArray( tasks ) ) {
+      throw Error( 'winkBM25S: Tasks should be an array, instead found: ' + JSON.stringify( tasks ) );
+    }
+    for ( var i = 0, imax = tasks.length; i < imax; i += 1 ) {
+      if ( typeof tasks[ i ] !== 'function' ) {
+        throw Error( 'winkBM25S: Tasks should contain function, instead found: ' + ( typeof tasks[ i ] ) );
+      }
+    }
+    var fldWeights = config.fldWeights;
     if ( field === undefined || field === null ) {
       pTasks = tasks;
       pTaskCount = tasks.length;
     } else {
-      if ( typeof field !== 'string' ) throw Error( 'winkBM25S: Field should be string, instead found: ' + ( typeof field ) );
+      if ( !fldWeights[ field ] || typeof field !== 'string' ) {
+        throw Error( 'winkBM25S: Field name is missing or it is not a string: ' + JSON.stringify( field ) + '/' + ( typeof field ) );
+      }
       flds[ field ] = flds[ field ] || Object.create( null );
       flds[ field ].pTasks = tasks;
       flds[ field ].pTaskCount = tasks.length;
@@ -209,8 +219,9 @@ var bm25fIMS = function () {
     // Setup field weights.
     for ( var field in cfg.fldWeights ) {
       // The `null` check is required as `isNaN( null )` returns `false`!!
-      if ( cfg.fldWeights[ field ] === null || isNaN( cfg.fldWeights[ field ] ) ) {
-        throw Error( 'winkBM25S: Field weight should be number, instead found: ' + JSON.stringify( cfg.fldWeights[ field ] ) );
+      // This first ensures non-`null/undefined/0` values before testing for NaN.
+      if ( !cfg.fldWeights[ field ] || isNaN( cfg.fldWeights[ field ] ) ) {
+        throw Error( 'winkBM25S: Field weight should be number >0, instead found: ' + JSON.stringify( cfg.fldWeights[ field ] ) );
       }
       // Update config parameters from `cfg`.
       config.fldWeights[ field ] = ( +cfg.fldWeights[ field ] );
@@ -462,7 +473,7 @@ var bm25fIMS = function () {
     var docStats = Object.create( null );
     docStats.totalCorpusLength = totalCorpusLength;
     docStats.totalDocs = totalDocs;
-    docStats.consolidated = consolidated || false;
+    docStats.consolidated = consolidated;
     return ( JSON.stringify( [
       config,
       docStats,

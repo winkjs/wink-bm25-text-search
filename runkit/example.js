@@ -7,6 +7,12 @@ var engine = bm25();
 var nlp = require( 'wink-nlp-utils' );
 // Load sample data (load any other JSON data instead of sample)
 var docs = require( 'wink-bm25-text-search/sample-data/data-for-wink-bm25.json' );
+
+// Step I: Define config
+// Only field weights are required in this example.
+engine.defineConfig( { fldWeights: { title: 4, body: 1, tags: 2 } } );
+
+// Step II: Define PrepTasks
 // Set up preparatory tasks for 'body' field
 engine.definePrepTasks( [
   nlp.string.lowerCase,
@@ -24,15 +30,18 @@ engine.definePrepTasks( [
   nlp.tokens.propagateNegations,
   nlp.tokens.stem
 ] );
-// // Define field weights
-engine.defineConfig( { fldWeights: { title: 4, body: 1, tags: 2 } } );
+
+// Step III: Add Docs
 // Add documents now...
 docs.forEach( function ( doc, i ) {
   // Note, 'i' becomes the unique id for 'doc'
   engine.addDoc( doc, i );
 } );
+
+// Step IV: Consolidate
 // Consolidate before searching
 engine.consolidate();
+
 // All set, start searching!
 var results = engine.search( 'who is married to barack' );
 // results is an array of [ doc-id, score ], sorted by score

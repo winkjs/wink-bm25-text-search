@@ -34,9 +34,15 @@ var it = mocha.it;
 
 describe( 'definePrepTasks() Error Cases', function () {
   var bts = bm25();
+  it( 'should throw error if config is not defined', function () {
+    expect( bts.definePrepTasks.bind( null, [ prepare.string.lowerCase ] ) ).to.throw( 'winkBM25S: Config must be defined before defining prepTasks.' );
+    // Config must be defined first to test remaining cases.
+    bts.defineConfig( { fldWeights: { title: 4, body: 1, tags: 2 } } );
+  } );
   var prepTasks = [
     { whenInputIs: [ [ prepare.string.incorrect, prepare.string.lowerCase ] ], expectedOutputIs: 'winkBM25S: Tasks should contain function, instead found: undefined' },
-    { whenInputIs: [ [ prepare.string.lowerCase ], {} ], expectedOutputIs: 'winkBM25S: Field should be string, instead found: object' },
+    { whenInputIs: [ [ prepare.string.lowerCase ], {} ], expectedOutputIs: 'winkBM25S: Field name is missing or it is not a string: {}/object' },
+    { whenInputIs: [ [ prepare.string.lowerCase ], 'unknown' ], expectedOutputIs: 'winkBM25S: Field name is missing or it is not a string: "unknown"/string' },
     { whenInputIs: [ null ], expectedOutputIs: 'winkBM25S: Tasks should be an array, instead found: null' },
     { whenInputIs: [ undefined ], expectedOutputIs: 'winkBM25S: Tasks should be an array, instead found: undefined' },
     { whenInputIs: [ 1 ], expectedOutputIs: 'winkBM25S: Tasks should be an array, instead found: 1' },
@@ -52,6 +58,7 @@ describe( 'definePrepTasks() Error Cases', function () {
 
 describe( 'definePrepTasks() Proper Cases', function () {
   var bts = bm25();
+  bts.defineConfig( { fldWeights: { title: 4, body: 1, tags: 2 } } );
   var prepTasks = [
     { whenInputIs: [ prepare.string.tokenize0, prepare.string.stem ], expectedOutputIs: 2 },
     { whenInputIs: [ ], expectedOutputIs: 0 }
@@ -88,12 +95,6 @@ describe( 'complete clean workflow test', function () {
     }
   ];
 
-  prepTasks.forEach( function ( ptask ) {
-    it( 'definePrepTasks should return "' + JSON.stringify( ptask.expectedOutputIs ) + '" if the input has ' + ptask.whenInputIs[ 0 ].length + ' tasks', function () {
-      expect( bts.definePrepTasks( ptask.whenInputIs[ 0 ], ptask.whenInputIs[ 1 ]  ) ).to.equal( ptask.expectedOutputIs );
-    } );
-  } );
-
   it( 'defineConfig should return true when proper config is passed', function () {
     var config = {
       fldWeights: {
@@ -108,6 +109,12 @@ describe( 'complete clean workflow test', function () {
         }
       };
     expect( bts.defineConfig( config ) ).to.equal( true );
+  } );
+
+  prepTasks.forEach( function ( ptask ) {
+    it( 'definePrepTasks should return "' + JSON.stringify( ptask.expectedOutputIs ) + '" if the input has ' + ptask.whenInputIs[ 0 ].length + ' tasks', function () {
+      expect( bts.definePrepTasks( ptask.whenInputIs[ 0 ], ptask.whenInputIs[ 1 ]  ) ).to.equal( ptask.expectedOutputIs );
+    } );
   } );
 
   docs.forEach( function ( doc, i ) {
@@ -161,18 +168,71 @@ describe( 'complete clean workflow test', function () {
   } );
 } );
 
-describe( 'defineConfig() Error Cases', function () {
+describe( 'complete clean workflow test with field value retained', function () {
   var bts = bm25();
   var prepTasks = [
-    { whenInputIs: [ prepare.string.tokenize0, prepare.string.stem ], expectedOutputIs: 2 },
-    { whenInputIs: [ ], expectedOutputIs: 0 }
+    {
+      whenInputIs: [ [
+      prepare.string.lowerCase,
+      prepare.string.removeExtraSpaces,
+      prepare.string.tokenize0,
+      prepare.tokens.stem,
+      prepare.tokens.propagateNegations ] ],
+      expectedOutputIs: 5
+    },
+    {
+      whenInputIs: [ [
+      prepare.string.lowerCase,
+      prepare.string.removeExtraSpaces,
+      prepare.string.tokenize0,
+      prepare.tokens.propagateNegations,
+      prepare.tokens.removeWords,
+      prepare.tokens.stem ], 'body' ],
+      expectedOutputIs: 6
+    }
   ];
 
+  var text = 'Ronald Wilson Reagan (/ˈrɒnəld ˈwɪlsən ˈreɪɡən/) (February 6, 1911 – June 5, 2004) was an American politician and actor who served as the 40th President of the United States from 1981 to 1989. Before his presidency, he was the 33rd Governor of California, from 1967 to 1975, after a career as a Hollywood actor and union leader. Raised in a poor family in small towns of northern Illinois, Reagan graduated from Eureka College in 1932 and worked as a sports announcer on several regional radio stations. After moving to Hollywood in 1937, he became an actor and starred in a few major productions. Reagan was twice elected President of the Screen Actors Guild, the labor union for actors, where he worked to root out Communist influence.';
+
+  var mobFilter = function ( fld, month ) {
+    return ( fld.mob === month );
+  };
+
+  it( 'defineConfig should return true when proper config is passed', function () {
+    var config = {
+      fldWeights: {
+         title: 4,
+         body: 1,
+         tags: 2
+       },
+       ovFldNames: [ 'mob' ]
+      };
+    expect( bts.defineConfig( config ) ).to.equal( true );
+  } );
+
   prepTasks.forEach( function ( ptask ) {
-    it( 'should return "' + ptask.expectedOutputIs + '" if the input is ' + JSON.stringify( ptask.whenInputIs ), function () {
-      expect( bts.definePrepTasks( ptask.whenInputIs ) ).to.equal( ptask.expectedOutputIs );
+    it( 'definePrepTasks should return "' + JSON.stringify( ptask.expectedOutputIs ) + '" if the input has ' + ptask.whenInputIs[ 0 ].length + ' tasks', function () {
+      expect( bts.definePrepTasks( ptask.whenInputIs[ 0 ], ptask.whenInputIs[ 1 ]  ) ).to.equal( ptask.expectedOutputIs );
     } );
   } );
+
+  docs.forEach( function ( doc, i ) {
+    it( 'addDoc should return ' + ( i + 1 ) + ' doc count', function () {
+      expect( bts.addDoc( doc, i ) ).to.equal( i + 1 );
+    } );
+  } );
+
+  it( 'consolidate should return true', function () {
+    expect( bts.consolidate( 2 ) ).to.equal( true );
+  } );
+
+  it( 'search should about Ronald Wilson Reagan', function () {
+    expect( docs[ bts.search( 'President of the United States', 10, mobFilter, 'february' )[ 0 ][ 0 ] ].body ).to.equal( text );
+  } );
+} );
+
+describe( 'defineConfig() Error Cases', function () {
+  var bts = bm25();
 
   it( 'should return true if the input is ', function () {
     expect( bts.addDoc.bind( null, { fail: 'why fail?' } ) ).to.throw( 'winkBM25S: Config must be defined before adding a document.' );
@@ -184,7 +244,7 @@ describe( 'defineConfig() Error Cases', function () {
     { whenInputIs: new Set([]), expectedOutputIs: 'winkBM25S: config must be a config object, instead found: {}' },
     { whenInputIs: {}, expectedOutputIs: 'winkBM25S: fldWeights must be an object, instead found: undefined' },
     { whenInputIs: { fldWeights: {} }, expectedOutputIs: 'winkBM25S: Field config has no field defined.' },
-    { whenInputIs: { fldWeights: { fail: {} } }, expectedOutputIs: 'winkBM25S: Field weight should be number, instead found: {}' },
+    { whenInputIs: { fldWeights: { fail: {} } }, expectedOutputIs: 'winkBM25S: Field weight should be number >0, instead found: {}' },
     { whenInputIs: { fldWeights: { fail: 2 }, ovFldNames: 3 }, expectedOutputIs: 'winkBM25S: OV Field names should be an array, instead found: "number"' },
     { whenInputIs: { fldWeights: { fail: 2 }, ovFldNames: [ '' ] }, expectedOutputIs: 'winkBM25S: OV Field name should be a non-empty string, instead found: ""' },
     { whenInputIs: { fldWeights: { fail: 2 }, ovFldNames: [ 3 ] }, expectedOutputIs: 'winkBM25S: OV Field name should be a non-empty string, instead found: 3' },

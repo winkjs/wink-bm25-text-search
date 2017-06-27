@@ -42,6 +42,12 @@ var engine = bm25();
 var nlp = require( 'wink-nlp-utils' );
 // Load sample data (load any other JSON data instead of sample)
 var docs = require( 'wink-bm25-text-search/sample-data/data-for-wink-bm25.json' );
+
+// Step I: Define config
+// Only field weights are required in this example.
+engine.defineConfig( { fldWeights: { title: 4, body: 1, tags: 2 } } );
+
+// Step II: Define PrepTasks
 // Set up preparatory tasks for 'body' field
 engine.definePrepTasks( [
   nlp.string.lowerCase,
@@ -59,15 +65,18 @@ engine.definePrepTasks( [
   nlp.tokens.propagateNegations,
   nlp.tokens.stem
 ] );
-// Define field weights
-engine.defineConfig( { fldWeights: { title: 4, body: 1, tags: 2 } } );
+
+// Step III: Add Docs
 // Add documents now...
 docs.forEach( function ( doc, i ) {
   // Note, 'i' becomes the unique id for 'doc'
   engine.addDoc( doc, i );
 } );
+
+// Step IV: Consolidate
 // Consolidate before searching
 engine.consolidate();
+
 // All set, start searching!
 var results = engine.search( 'who is married to barack' );
 // results is an array of [ doc-id, score ], sorted by score
@@ -80,7 +89,7 @@ console.log( docs[ results[ 0 ][ 0 ] ].body );
 
 #### definePrepTasks( tasks [, field ] )
 
-Defines the text preparation `tasks` to transform raw incoming text into an array of tokens required during `addDoc()`, and `search()` operations. The `tasks` should be an array of functions. The first function in this array must accept a string as input; and the last function must return an array of tokens as JavaScript Strings. Each function must accept one input argument and return a single value. `definePrepTasks` returns the count of `tasks`. The second argument — `field` is optional. It defines the `field` of the document for which the `tasks` will be defined; in absence of this argument, the `tasks` become the default for everything else.
+Defines the text preparation `tasks` to transform raw incoming text into an array of tokens required during `addDoc()`, and `search()` operations. The `tasks` should be an array of functions. The first function in this array must accept a string as input; and the last function must return an array of tokens as JavaScript Strings. Each function must accept one input argument and return a single value. `definePrepTasks` returns the count of `tasks`. The second argument — `field` is optional. It defines the `field` of the document for which the `tasks` will be defined; in absence of this argument, the `tasks` become the default for everything else. The configuration must be defined via `defineConfig()` prior to this call.
 
 As illustrated in the usage, [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) offers a rich set of such functions.
 
