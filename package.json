@@ -20,7 +20,8 @@
     "coveralls": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "docs": "docco -o ./docs/ ./src/*.js",
     "hint": "jshint ./src/*.js ./test/*.js ./runkit/*.js",
-    "lint": "eslint ./src/*.js ./test/*.js ./runkit/*.js"
+    "lint": "eslint ./src/*.js ./test/*.js ./runkit/*.js",
+    "changelog": "standard-changelog"
   },
   "repository": {
     "type": "git",
@@ -41,6 +42,7 @@
     "jshint": "^2.9.4",
     "mocha": "^3.1.0",
     "mocha-lcov-reporter": "^1.2.0",
+    "standard-changelog": "^1.0.1",
     "wink-nlp-utils": "^1.0.2"
   },
   "dependencies": {
