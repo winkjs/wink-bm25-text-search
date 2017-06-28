@@ -11,20 +11,20 @@ Add fast in-memory semantic search to your application using **`wink-bm25-text-s
 
 It is based on state-of-the-art text search algorithm — BM25 — a Probabilistic Relevance Framework for document retrieval. It's [API](#api) offers a rich set of features:
 
-1. **Complete flexibility in text preparation** — perform tasks such as tokenization and stemming using [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) or any other package of your choice.
+1. **Scalable Design** allows easy addition/customization of features like **geolocation** and more.
 
-2. **Add semantic flavor** to the search by:
+2. **Search on exact values of pre-defined fields**, makes search results more relevant.
+
+3. **Index optimized for size and speed** can be exported (and imported) from the added documents in a JSON format.
+
+4. **Full control over BM25 configuration** — while default values work well for most situations, there is an option to control them.
+
+5. **Add semantic flavor** to the search by:
     1. Assigning different numerical weights to the fields. A negative field weight will pull down the document's score whenever a match with that field occurs.
     2. Using `amplifyNegation()` and `propagateNegations()` from [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) will ensure different search results for query texts containing phrases like **"good"** and **"not good"**.
     3. Defining different text preparation tasks separately for the fields and query text.
 
-3. **Full control over BM25 configuration** — while default values work well for most situations, there is an option to control them.
-
-4. **Index optimized for size and speed** can be exported (and imported) from the added documents in a JSON format.
-
-5. **Search on exact values of pre-defined fields**, makes search results more relevant.
-
-6. **Scalable Search** allows easy addition of features like **geolocation** and more.
+6. **Complete flexibility in text preparation** — perform tasks such as tokenization and stemming using [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) or any other package of your choice.
 
 
 
@@ -92,6 +92,15 @@ console.log( docs[ results[ 0 ][ 0 ] ].body );
 
 ## API
 
+#### defineConfig( config )
+Defines the configuration from the `config` object. This object defines following 3 properties:
+
+1. The `fldWeights` (mandatory) is an object where each *key* is the *document's field name* and the *value* is the *numerical weight* i.e. the importance of that field.
+
+2. The `bm25Params` (optional) is also an object that defines upto 3 keys viz. `k1`, `b`, and `k`. Their default values are respectively `1.2`, `0.75`, and `1`. Note: **`k1`** controls TF saturation; **`b`** controls degree of normalization, and **`k`** manages IDF.
+
+3. The `ovFieldNames` (optional) is an array containing the names of the fields, whose original value must be retained. This should be defined, if search on exact field values is required.
+
 #### definePrepTasks( tasks [, field ] )
 
 Defines the text preparation `tasks` to transform raw incoming text into an array of tokens required during `addDoc()`, and `search()` operations. It returns the count of `tasks`.
@@ -101,16 +110,6 @@ The `tasks` should be an array of functions. The first function in this array mu
 The second argument — `field` is optional. It defines the `field` of the document for which the `tasks` will be defined; in absence of this argument, the `tasks` become the default for everything else. The configuration must be defined via `defineConfig()` prior to this call.
 
 As illustrated in the example above, [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) offers a rich set of such functions.
-
-#### defineConfig( config )
-Defines the configuration from the `config` object. This object defines following 3 properties:
-
-1. The `fldWeights` (mandatory) is an object where each *key* is the *document's field name* and the *value* is the *numerical weight* i.e. the importance of that field.
-
-2. The `bm25Params` (optional) is also an object that defines upto 3 keys viz. `k1`, `b`, and `k`. Thier default values are respectively **1.2**, **0.75**, and **1**. Note: **`k1`** controls TF saturation; **`b`** controls degree of normalization, and **`k`** manages IDF.
-
-3. The `ovFieldNames` (optional) is an array containing the names of the fields, whose original value must be retained. This should be define if search on exact field values is required.
-
 
 #### addDoc( doc, uniqueId )
 Adds the `doc` with the `uniqueId` to the BM25 model. Prior to adding docs, `defineConfig()` and `definePrepTasks()` must be called. It accepts structured JSON documents as input for creating the model. Following is an example document structure of the sample data JSON contained in this package:
