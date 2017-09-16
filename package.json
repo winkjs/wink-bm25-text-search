@@ -25,14 +25,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/decisively/wink-bm25-text-search.git"
+    "url": "git+https://github.com/winkjs/wink-bm25-text-search.git"
   },
   "author": "Sanjaya Kumar Saxena",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/decisively/wink-bm25-text-search/issues"
+    "url": "https://github.com/winkjs/wink-bm25-text-search/issues"
   },
-  "homepage": "https://github.com/decisively/wink-bm25-text-search#readme",
+  "homepage": "https://github.com/winkjs/wink-bm25-text-search#readme",
   "devDependencies": {
     "chai": "^4.1.1",
     "coveralls": "^2.11.15",
@@ -46,7 +46,7 @@
     "wink-nlp-utils": "^1.0.2"
   },
   "dependencies": {
-    "wink-helpers": "^1.0.0"
+    "wink-helpers": "^1.2.0"
   },
   "runkitExampleFilename": "runkit/example.js"
 }
