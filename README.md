@@ -99,7 +99,7 @@ Defines the configuration from the `config` object. This object defines followin
 
 2. The `bm25Params` (optional) is also an object that defines upto 3 keys viz. `k1`, `b`, and `k`. Their default values are respectively `1.2`, `0.75`, and `1`. Note: **`k1`** controls TF saturation; **`b`** controls degree of normalization, and **`k`** manages IDF.
 
-3. The `ovFieldNames` (optional) is an array containing the names of the fields, whose original value must be retained. This should be defined, if search on exact field values is required.
+3. The `ovFldNames` (optional) is an array containing the names of the fields, whose original value must be retained. This is useful in reducing the search space using **filter** in `search()` api call.
 
 #### definePrepTasks( tasks [, field ] )
 
@@ -132,10 +132,12 @@ Consolidates the BM25 model for all the added documents. The `fp` defines the pr
 which term frequency values are stored. The default value is 4 and is good enough for most situations. It is a prerequisite for `search()` and documents cannot be added post consolidation.
 
 #### search( text [, limit, filter, params ] )
-Searches for the `text` and returns upto the `limit` number of results. The `filter` should be a function that must return true or false based on `params`. Think of it as Javascript Array's filter function. Both `filter` and `params` are optional.
+Searches for the `text` and returns upto the `limit` number of results. The `filter` should be a function that must return true or false based on `params`. Think of it as Javascript Array's filter function. It receives two arguments viz. (a) an object containing field name/value pairs as defined via `ovFldNames` in `defineConfig()`, and (b) the `params`.
+
+The last three arguments `limit`, `filter` and `params` are optional. The default value of `limit` is **10**.
 
 The result is an array of
-`[ uniqueId, relevanceScore ]`, sorted on the `relevanceScore`. The default value of `limit` is **10**.
+`[ uniqueId, relevanceScore ]`, sorted on the `relevanceScore`.
 
 Like `addDoc()`, it also has an alias `predict( doc, uniqueId )` to maintain API level uniformity across various [wink](https://www.npmjs.com/~sanjaya) packages such as [wink-naive-bayes-text-classifier](https://www.npmjs.com/package/wink-naive-bayes-text-classifier).
 

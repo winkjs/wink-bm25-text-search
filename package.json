@@ -35,12 +35,12 @@
   "homepage": "https://github.com/winkjs/wink-bm25-text-search#readme",
   "devDependencies": {
     "chai": "^4.1.1",
-    "coveralls": "^2.11.15",
+    "coveralls": "^3.0.0",
     "docco": "^0.7.0",
     "eslint": "^4.4.1",
     "istanbul": "^0.4.5",
     "jshint": "^2.9.4",
-    "mocha": "^3.1.0",
+    "mocha": "^4.0.1",
     "mocha-lcov-reporter": "^1.2.0",
     "standard-changelog": "^1.0.1",
     "wink-nlp-utils": "^1.0.2"
