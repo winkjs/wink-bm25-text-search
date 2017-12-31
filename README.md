@@ -1,13 +1,13 @@
 
 # wink-bm25-text-search
 
-> Fast Full Text Search based on [BM25](http://opensourceconnections.com/blog/2015/10/16/bm25-the-next-generation-of-lucene-relevation/)
+Fast Full Text Search based on [BM25](http://opensourceconnections.com/blog/2015/10/16/bm25-the-next-generation-of-lucene-relevation/)
 
 ### [![Build Status](https://api.travis-ci.org/winkjs/wink-bm25-text-search.svg?branch=master)](https://travis-ci.org/winkjs/wink-bm25-text-search) [![Coverage Status](https://coveralls.io/repos/github/winkjs/wink-bm25-text-search/badge.svg?branch=master)](https://coveralls.io/github/winkjs/wink-bm25-text-search?branch=master) [![Inline docs](http://inch-ci.org/github/winkjs/wink-bm25-text-search.svg?branch=master)](http://inch-ci.org/github/winkjs/wink-bm25-text-search) [![dependencies Status](https://david-dm.org/winkjs/wink-bm25-text-search/status.svg)](https://david-dm.org/winkjs/wink-bm25-text-search) [![devDependencies Status](https://david-dm.org/winkjs/wink-bm25-text-search/dev-status.svg)](https://david-dm.org/winkjs/wink-bm25-text-search?type=dev)
 
 <img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
 
-Add fast in-memory semantic search to your application using **`wink-bm25-text-search`**. It is a part of [wink](https://www.npmjs.com/~sanjaya) — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.
+Add fast in-memory semantic search to your application using **`wink-bm25-text-search`**. It is a part of [wink](http://winkjs.org/) — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.
 
 It is based on state-of-the-art text search algorithm — BM25 — a Probabilistic Relevance Framework for document retrieval. It's [API](#api) offers a rich set of features:
 
