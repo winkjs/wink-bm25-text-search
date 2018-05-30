@@ -157,7 +157,7 @@ If you spot a bug and the same has not yet been reported, raise a new [issue](ht
 
 
 ## Copyright & License
-**wink-bm25-text-search** is copyright 2017 GRAYPE Systems Private Limited.
+**wink-bm25-text-search** is copyright 2017-18 GRAYPE Systems Private Limited.
 
 It is licensed under the under the terms of the GNU Affero General Public License as published by the Free
 Software Foundation, version 3 of the License.
