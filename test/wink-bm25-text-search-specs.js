@@ -322,3 +322,67 @@ describe( 'defineConfig() Error Cases', function () {
     expect( bts.importJSON.bind( null, '[ 1, 1, 1, 1, 1, 1, 1, 1, 1 ]' ) ).to.throw( 'winkBM25S: invalid JSON encountered, can not import.' );
   } );
 } );
+
+describe( 'complete workflow to test consildate edge case', function () {
+  var bts = bm25();
+  var prepTasks = [
+    {
+      whenInputIs: [ [
+      prepare.string.lowerCase,
+      prepare.string.removeExtraSpaces,
+      prepare.string.tokenize0,
+      prepare.tokens.stem,
+      prepare.tokens.propagateNegations ] ],
+      expectedOutputIs: 5
+    },
+    {
+      whenInputIs: [ [
+      prepare.string.lowerCase,
+      prepare.string.removeExtraSpaces,
+      prepare.string.tokenize0,
+      prepare.tokens.propagateNegations,
+      prepare.tokens.removeWords,
+      prepare.tokens.stem ], 'body' ],
+      expectedOutputIs: 6
+    }
+  ];
+
+  it( 'defineConfig should return true when proper config is passed', function () {
+    var config = {
+      fldWeights: {
+         title: 4,
+         body: 1,
+         tags: 2
+       },
+       bm25Params: {
+          k1: 1.2,
+          k: 1,
+          b: 0.75
+        }
+      };
+    expect( bts.defineConfig( config ) ).to.equal( true );
+  } );
+
+  prepTasks.forEach( function ( ptask ) {
+    it( 'definePrepTasks should return "' + JSON.stringify( ptask.expectedOutputIs ) + '" if the input has ' + ptask.whenInputIs[ 0 ].length + ' tasks', function () {
+      expect( bts.definePrepTasks( ptask.whenInputIs[ 0 ], ptask.whenInputIs[ 1 ]  ) ).to.equal( ptask.expectedOutputIs );
+    } );
+  } );
+
+  docs.forEach( function ( doc, i ) {
+    it( 'addDoc should return ' + ( i + 1 ) + ' doc count', function () {
+      expect( bts.addDoc( doc, i ) ).to.equal( i + 1 );
+    } );
+  } );
+
+  it( 'consolidate should return true', function () {
+    // consildate edge case lleft out in earlier tests!
+    expect( bts.consolidate( 10 ) ).to.equal( true );
+  } );
+
+  var text = 'Michelle LaVaughn Robinson Obama (born January 17, 1964) is an American lawyer and writer who was First Lady of the United States from 2009 to 2017. She is married to the 44th President of the United States, Barack Obama, and was the first African-American First Lady. Raised on the South Side of Chicago, Illinois, Obama is a graduate of Princeton University and Harvard Law School, and spent her early legal career working at the law firm Sidley Austin, where she met her husband. She subsequently worked as the Associate Dean of Student Services at the University of Chicago and the Vice President for Community and External Affairs of the University of Chicago Medical Center. Barack and Michelle married in 1992 and have two daughters.';
+
+  it( 'search should return \n\t' + docs[ 1 ].body, function () {
+    expect( docs[ bts.search( 'whoes husband is barack' )[ 0 ][ 0 ] ].body ).to.equal( text );
+  } );
+} );
