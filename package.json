@@ -28,7 +28,7 @@
     "url": "git+https://github.com/winkjs/wink-bm25-text-search.git"
   },
   "author": "Sanjaya Kumar Saxena",
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-only",
   "bugs": {
     "url": "https://github.com/winkjs/wink-bm25-text-search/issues"
   },
