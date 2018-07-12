@@ -35,9 +35,9 @@
   "homepage": "https://github.com/winkjs/wink-bm25-text-search#readme",
   "devDependencies": {
     "chai": "^4.1.2",
-    "coveralls": "^3.0.1",
+    "coveralls": "^3.0.2",
     "docco": "^0.8.0",
-    "eslint": "^4.19.1",
+    "eslint": "^5.1.0",
     "istanbul": "^1.1.0-alpha.1",
     "jshint": "^2.9.5",
     "mocha": "^5.2.0",
@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "wink-nlp-utils": "^1.9.0",
-    "wink-helpers": "^1.4.0"
+    "wink-helpers": "^1.5.0"
   },
   "runkitExampleFilename": "runkit/example.js"
 }
