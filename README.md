@@ -3,7 +3,8 @@
 
 Fast Full Text Search based on [BM25](http://opensourceconnections.com/blog/2015/10/16/bm25-the-next-generation-of-lucene-relevation/)
 
-### [![Build Status](https://api.travis-ci.org/winkjs/wink-bm25-text-search.svg?branch=master)](https://travis-ci.org/winkjs/wink-bm25-text-search) [![Coverage Status](https://coveralls.io/repos/github/winkjs/wink-bm25-text-search/badge.svg?branch=master)](https://coveralls.io/github/winkjs/wink-bm25-text-search?branch=master) [![Inline docs](http://inch-ci.org/github/winkjs/wink-bm25-text-search.svg?branch=master)](http://inch-ci.org/github/winkjs/wink-bm25-text-search) [![dependencies Status](https://david-dm.org/winkjs/wink-bm25-text-search/status.svg)](https://david-dm.org/winkjs/wink-bm25-text-search) [![devDependencies Status](https://david-dm.org/winkjs/wink-bm25-text-search/dev-status.svg)](https://david-dm.org/winkjs/wink-bm25-text-search?type=dev)
+### [![Build Status](https://api.travis-ci.org/winkjs/wink-bm25-text-search.svg?branch=master)](https://travis-ci.org/winkjs/wink-bm25-text-search) [![Coverage Status](https://coveralls.io/repos/github/winkjs/wink-bm25-text-search/badge.svg?branch=master)](https://coveralls.io/github/winkjs/wink-bm25-text-search?branch=master) [![Inline docs](http://inch-ci.org/github/winkjs/wink-bm25-text-search.svg?branch=master)](http://inch-ci.org/github/winkjs/wink-bm25-text-search) [![dependencies Status](https://david-dm.org/winkjs/wink-bm25-text-search/status.svg)](https://david-dm.org/winkjs/wink-bm25-text-search) [![devDependencies Status](https://david-dm.org/winkjs/wink-bm25-text-search/dev-status.svg)](https://david-dm.org/winkjs/wink-bm25-text-search?type=dev) [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/winkjs/Lobby)
+
 
 <img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
 
