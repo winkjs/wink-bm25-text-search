@@ -8,9 +8,7 @@ Fast Full Text Search based on [BM25](http://opensourceconnections.com/blog/2015
 
 <img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
 
-Add fast in-memory semantic search to your application using **`wink-bm25-text-search`**. It is a part of [wink](http://winkjs.org/) — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.
-
-It is based on state-of-the-art text search algorithm — BM25 — a Probabilistic Relevance Framework for document retrieval. It's [API](#api) offers a rich set of features:
+Add fast in-memory semantic search to your application using **`wink-bm25-text-search`**. It is based on state-of-the-art text search algorithm — BM25 — a Probabilistic Relevance Framework for document retrieval. It's [API](#api) offers a rich set of features:
 
 1. **Scalable Design** allows easy addition/customization of features like **geolocation** and more.
 
@@ -156,9 +154,11 @@ It completely resets the BM25 model by re-initializing all the variables, except
 ## Need Help?
 If you spot a bug and the same has not yet been reported, raise a new [issue](https://github.com/winkjs/wink-bm25-text-search/issues) or consider fixing it and sending a pull request.
 
+### About wink
+[Wink](http://winkjs.org/) is a family of open source packages for **Statistical Analysis**, **Natural Language Processing** and **Machine Learning** in NodeJS. The code is **thoroughly documented** for easy human comprehension and has a **test coverage of ~100%** for reliability to build production grade solutions.
+
 
 ## Copyright & License
-**wink-bm25-text-search** is copyright 2017-18 GRAYPE Systems Private Limited.
+**wink-bm25-text-search** is copyright 2017-18 [GRAYPE Systems Private Limited](http://graype.in/).
 
-It is licensed under the under the terms of the GNU Affero General Public License as published by the Free
-Software Foundation, version 3 of the License.
+It is licensed under the terms of the MIT License.
