@@ -1,7 +1,7 @@
 //     wink-bm25-text-search
 //     Fast Full Text Search based on BM25F
 //
-//     Copyright (C) 2017-18  GRAYPE Systems Private Limited
+//     Copyright (C) 2017-19  GRAYPE Systems Private Limited
 //
 //     This file is part of “wink-bm25-text-search”.
 //
