@@ -320,8 +320,22 @@ var bm25fIMS = function () {
   // #### Get Docs
 
   // Returns the document database.
-  var getDocs = function ( id ) {
+  var getDocs = function () {
     return documents
+  }
+
+  // #### Get Tokens
+
+  // Returns the token to token ID database.
+  var getTokens = function () {
+    return token2Index
+  }
+
+  // #### Get IDF
+
+  // Returns token ID to IDF database.
+  var getIDF = function () {
+    return idf
   }
 
   // #### Consolidate
