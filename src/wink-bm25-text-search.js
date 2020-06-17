@@ -121,6 +121,7 @@ var bm25fIMS = function () {
       if ( freq[ t ] === undefined ) {
         freq[ t ] = weight;
         invertedIdx[ t ] = invertedIdx[ t ] || [];
+        invertedIdx[ t ].push( id );
       } else {
         freq[ t ] += weight;
       }
@@ -272,6 +273,7 @@ var bm25fIMS = function () {
     } );
     return true;
   }; // defineConfig()
+
 
   // #### Add Doc
 
