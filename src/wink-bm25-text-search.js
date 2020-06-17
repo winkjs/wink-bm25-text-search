@@ -274,13 +274,6 @@ var bm25fIMS = function () {
     return true;
   }; // defineConfig()
 
-  // #### Get Doc
-
-  // Returns the document with `id` or undefined.
-  var getDoc = function ( id ) {
-    return documents[ id ]
-  }
-
   // #### Add Doc
 
   // Adds a document to the model using `updateFreq()` function.
@@ -323,6 +316,13 @@ var bm25fIMS = function () {
     totalDocs += 1;
     return ( totalDocs );
   }; // addDoc()
+
+  // #### Get Docs
+
+  // Returns the document database.
+  var getDocs = function ( id ) {
+    return documents
+  }
 
   // #### Consolidate
 
@@ -549,7 +549,7 @@ var bm25fIMS = function () {
   methods.definePrepTasks = definePrepTasks;
   methods.defineConfig = defineConfig;
   methods.addDoc = addDoc;
-  methods.getDoc = getDoc;
+  methods.getDocs = getDocs;
   methods.consolidate = consolidate;
   methods.search = search;
   methods.exportJSON = exportJSON;
