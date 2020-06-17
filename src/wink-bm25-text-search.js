@@ -274,6 +274,12 @@ var bm25fIMS = function () {
     return true;
   }; // defineConfig()
 
+  // #### Get Doc
+
+  // Returns the document with `id` or undefined.
+  var getDoc = function ( id ) {
+    return documents[ id ]
+  }
 
   // #### Add Doc
 
@@ -543,6 +549,7 @@ var bm25fIMS = function () {
   methods.definePrepTasks = definePrepTasks;
   methods.defineConfig = defineConfig;
   methods.addDoc = addDoc;
+  methods.getDoc = getDoc;
   methods.consolidate = consolidate;
   methods.search = search;
   methods.exportJSON = exportJSON;
