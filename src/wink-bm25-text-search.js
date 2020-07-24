@@ -322,22 +322,43 @@ var bm25fIMS = function () {
 
   // Returns the document database.
   var getDocs = function () {
-    return documents
-  }
+    return documents;
+  };
 
   // #### Get Tokens
 
   // Returns the token to token ID database.
   var getTokens = function () {
-    return token2Index
-  }
+    return token2Index;
+  };
 
   // #### Get IDF
 
   // Returns token ID to IDF database.
   var getIDF = function () {
-    return idf
-  }
+    return idf;
+  };
+
+  // #### Get Config
+
+  // Returns the config.
+  var getConfig = function () {
+    return config;
+  };
+
+  // #### Get TotalCorpusLength
+
+  // Returns the number of tokens in the database.
+  var getTotalCorpusLength = function () {
+    return totalCorpusLength;
+  };
+
+  // #### Get TotalDocs
+
+  // Returns the number of documents in the database.
+  var getTotalDocs = function () {
+    return totalDocs;
+  };
 
   // #### Consolidate
 
@@ -566,7 +587,10 @@ var bm25fIMS = function () {
   methods.addDoc = addDoc;
   methods.getDocs = getDocs;
   methods.getTokens = getTokens;
+  methods.getConfig = getConfig;
   methods.getIDF = getIDF;
+  methods.getTotalCorpusLength = getTotalCorpusLength;
+  methods.getTotalDocs = getTotalDocs;
   methods.consolidate = consolidate;
   methods.search = search;
   methods.exportJSON = exportJSON;
