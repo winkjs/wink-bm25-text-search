@@ -364,6 +364,8 @@ describe( 'complete workflow to test consildate edge case', function () {
         }
       };
     expect( bts.defineConfig( config ) ).to.equal( true );
+    expect( bts.getConfig().bm25Params ).to.eql( config.bm25Params );
+    expect( bts.getConfig().fldWeights ).to.eql( config.fldWeights );
   } );
 
   prepTasks.forEach( function ( ptask ) {
@@ -375,12 +377,16 @@ describe( 'complete workflow to test consildate edge case', function () {
   docs.forEach( function ( doc, i ) {
     it( 'addDoc should return ' + ( i + 1 ) + ' doc count', function () {
       expect( bts.addDoc( doc, i ) ).to.equal( i + 1 );
+      expect( bts.getTotalDocs() ).to.equal( i + 1 );
+      expect( Object.keys( bts.getDocs() ).length ).to.equal( i + 1 );
     } );
   } );
 
   it( 'consolidate should return true', function () {
     // consildate edge case lleft out in earlier tests!
     expect( bts.consolidate( 10 ) ).to.equal( true );
+    expect( bts.getTotalCorpusLength() ).to.be.above( 0 );
+    expect( Object.keys( bts.getIDF() ).length ).to.equal( Object.keys( bts.getTokens() ).length );
   } );
 
   var text = 'Michelle LaVaughn Robinson Obama (born January 17, 1964) is an American lawyer and writer who was First Lady of the United States from 2009 to 2017. She is married to the 44th President of the United States, Barack Obama, and was the first African-American First Lady. Raised on the South Side of Chicago, Illinois, Obama is a graduate of Princeton University and Harvard Law School, and spent her early legal career working at the law firm Sidley Austin, where she met her husband. She subsequently worked as the Associate Dean of Student Services at the University of Chicago and the Vice President for Community and External Affairs of the University of Chicago Medical Center. Barack and Michelle married in 1992 and have two daughters.';
