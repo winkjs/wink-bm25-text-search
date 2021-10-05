@@ -20,12 +20,12 @@ Add fast in-memory semantic search to your application using **`wink-bm25-text-s
 
 5. **Add semantic flavor** to the search by:
     1. Assigning different numerical weights to the fields. A negative field weight will pull down the document's score whenever a match with that field occurs.
-    2. Using `amplifyNegation()` and `propagateNegations()` from [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) will ensure different search results for query texts containing phrases like **"good"** and **"not good"**.
+    1. Using rich text processing features of [wink-nlp](https://github.com/winkjs/wink-nlp) such as _negation detection_, _stemming_, _lemmatization_, _stop word detection_ and _named entity detection_ to perform intelligent searches.
     3. Defining different text preparation tasks separately for the fields and query text.
 
-6. **Complete flexibility in text preparation** — perform tasks such as tokenization and stemming using [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) or any other package of your choice.
+6. **Complete flexibility in text preparation** — use [wink-nlp](https://github.com/winkjs/wink-nlp) or any other package of your choice.
 
-
+> Note: [wink-nlp-utils](https://github.com/winkjs/wink-nlp-utils) remains available to support the legacy code. Please refer to [version 3.0.1](https://github.com/winkjs/wink-bm25-text-search/releases/tag/3.0.1) for wink-nlp-util examples.
 
 ## Installation
 Use [npm](https://www.npmjs.com/package/wink-bm25-text-search) to install:
@@ -39,22 +39,30 @@ npm install wink-bm25-text-search --save
 
 ```javascript
 // Load wink-bm25-text-search
-var bm25 = require( '../src/wink-bm25-text-search' );
+var bm25 = require( 'wink-bm25-text-search' );
 // Create search engine's instance
 var engine = bm25();
-// Load NLP utilities
-var nlp = require( 'wink-nlp-utils' );
 // Load sample data (load any other JSON data instead of sample)
-var docs = require( '../sample-data/data-for-wink-bm25.json' );
+var docs = require( 'wink-bm25-text-search/sample-data/demo-data-for-wink-bm25.json' );
+// Load wink nlp and its model
+const winkNLP = require( 'wink-nlp' );
+// Use web model
+const model = require( 'wink-eng-lite-web-model' );
+const nlp = winkNLP( model );
+const its = nlp.its;
 
-// Define preparatory task pipe!
-var pipe = [
-  nlp.string.lowerCase,
-  nlp.string.tokenize0,
-  nlp.tokens.removeWords,
-  nlp.tokens.stem,
-  nlp.tokens.propagateNegations
-];
+const prepTask = function ( text ) {
+  const tokens = [];
+  nlp.readDoc(text)
+      .tokens()
+      // Use only words ignoring punctuations etc and from them remove stop words
+      .filter( (t) => ( t.out(its.type) === 'word' && !t.out(its.stopWordFlag) ) )
+      // Handle negation and extract stem of the word
+      .each( (t) => tokens.push( (t.out(its.negationFlag)) ? '!' + t.out(its.stem) : t.out(its.stem) ) );
+
+  return tokens;
+};
+
 // Contains search query.
 var query;
 
@@ -63,7 +71,7 @@ var query;
 engine.defineConfig( { fldWeights: { title: 1, body: 2 } } );
 // Step II: Define PrepTasks pipe.
 // Set up 'default' preparatory tasks i.e. for everything else
-engine.definePrepTasks( pipe );
+engine.definePrepTasks( [ prepTask ] );
 
 // Step III: Add Docs
 // Add documents now...
@@ -90,6 +98,7 @@ console.log( docs[ results[ 0 ][ 0 ] ].body );
 
 // Whereas if you search for `law` then multiple entries will be
 // found except the above entry!
+
 ```
 
 ## API

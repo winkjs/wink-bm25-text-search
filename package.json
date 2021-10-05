@@ -44,8 +44,10 @@
     "standard-changelog": "^2.0.7"
   },
   "dependencies": {
-    "wink-nlp-utils": "^2.0.4",
-    "wink-helpers": "^2.0.0"
+    "wink-eng-lite-web-model": "^1.2.2",
+    "wink-helpers": "^2.0.0",
+    "wink-nlp": "^1.8.1",
+    "wink-nlp-utils": "^2.0.4"
   },
   "runkitExampleFilename": "runkit/example.js"
 }
