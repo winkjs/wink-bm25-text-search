@@ -1,8 +1,6 @@
 //     wink-bm25-text-search
-//     Configurable BM25 Text Search Engine with simple
-//     semantic search support.
 //
-//     Copyright (C) 2017-19  GRAYPE Systems Private Limited
+//     Copyright (C) GRAYPE Systems Private Limited
 //
 //     This file is part of “wink-bm25-text-search”.
 //
