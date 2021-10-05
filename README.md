@@ -153,6 +153,17 @@ An existing JSON BM25 model can be imported for search. It is essential to call 
 #### reset()
 It completely resets the BM25 model by re-initializing all the variables, except the preparatory tasks.
 
+### Accessors
+It provides following accessor methods:
+
+1. `getDocs()` returns the Term Frequencies & length of each document.
+1. `getTokens()` returns the `token: index` mapping.
+1. `getIDF()` returns IDF for each token. Tokens are referenced via their numerical index, which is accessed via `getTokens()`.
+1. `getConfig()` returns the BM25F Configuration as set up by `defineConfig()`.
+1. `getTotalCorpusLength()` returns the total number of tokens across all documents added.
+1. `getTotalDocs()` returns total documents added.
+
+> Note: these accessors expose some of the internal data structure and one must refrain from modifying it. It is meant exclusively for read-only purpose. Any intentional or unintentional modification may result in serious malfunction of the package.
 
 ## Need Help?
 If you spot a bug and the same has not yet been reported, raise a new [issue](https://github.com/winkjs/wink-bm25-text-search/issues) or consider fixing it and sending a pull request.
