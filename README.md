@@ -120,8 +120,6 @@ The `tasks` should be an array of functions. The first function in this array mu
 
 The second argument — `field` is optional. It defines the `field` of the document for which the `tasks` will be defined; in absence of this argument, the `tasks` become the default for everything else. The configuration must be defined via `defineConfig()` prior to this call.
 
-As illustrated in the example above, [wink-nlp-utils](https://www.npmjs.com/package/wink-nlp-utils) offers a rich set of such functions.
-
 #### addDoc( doc, uniqueId )
 Adds the `doc` with the `uniqueId` to the BM25 model. Prior to adding docs, `defineConfig()` and `definePrepTasks()` must be called. It accepts structured JSON documents as input for creating the model. Following is an example document structure of the sample data JSON contained in this package:
 ```
