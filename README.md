@@ -3,7 +3,7 @@
 
 Fast Full Text Search based on [BM25](http://opensourceconnections.com/blog/2015/10/16/bm25-the-next-generation-of-lucene-relevation/)
 
-### [![Build Status](https://api.travis-ci.org/winkjs/wink-bm25-text-search.svg?branch=master)](https://travis-ci.org/winkjs/wink-bm25-text-search) [![Coverage Status](https://coveralls.io/repos/github/winkjs/wink-bm25-text-search/badge.svg?branch=master)](https://coveralls.io/github/winkjs/wink-bm25-text-search?branch=master) [![Inline docs](http://inch-ci.org/github/winkjs/wink-bm25-text-search.svg?branch=master)](http://inch-ci.org/github/winkjs/wink-bm25-text-search) [![dependencies Status](https://david-dm.org/winkjs/wink-bm25-text-search/status.svg)](https://david-dm.org/winkjs/wink-bm25-text-search) [![devDependencies Status](https://david-dm.org/winkjs/wink-bm25-text-search/dev-status.svg)](https://david-dm.org/winkjs/wink-bm25-text-search?type=dev) [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/winkjs/Lobby)
+### [![Build Status](https://api.travis-ci.org/winkjs/wink-bm25-text-search.svg?branch=master)](https://travis-ci.org/winkjs/wink-bm25-text-search) [![Coverage Status](https://coveralls.io/repos/github/winkjs/wink-bm25-text-search/badge.svg?branch=master)](https://coveralls.io/github/winkjs/wink-bm25-text-search?branch=master) [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/winkjs/Lobby)
 
 
 <img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
@@ -101,6 +101,9 @@ console.log( docs[ results[ 0 ][ 0 ] ].body );
 
 ```
 
+### How to implement pure browser-side search?
+Explore [Wink BM25 Text Search Showcase](https://winkjs.org/showcase-bm25-text-search/) to dig deeper. Its code is available in [showcase-bm25-text-search](https://github.com/winkjs/showcase-bm25-text-search) repo along with a detailed [blog post](https://winkjs.org/blog/browser-search.html).
+
 ## API
 
 #### defineConfig( config )
@@ -180,6 +183,6 @@ If you spot a bug and the same has not yet been reported, raise a new [issue](ht
 
 
 ## Copyright & License
-**wink-bm25-text-search** is copyright 2017-21 [GRAYPE Systems Private Limited](http://graype.in/).
+**wink-bm25-text-search** is copyright 2017-22 [GRAYPE Systems Private Limited](http://graype.in/).
 
 It is licensed under the terms of the MIT License.
