@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - "16"
+  - "18"
 
 cache:
   directories:
@@ -8,4 +9,5 @@ cache:
 
 script:
   - npm run pretest
-  - npm run coveralls
+  - npm run test
+  - npm run coverage
