@@ -25,7 +25,7 @@ Add fast in-memory semantic search to your application using **`wink-bm25-text-s
 
 6. **Complete flexibility in text preparation** — use [wink-nlp](https://github.com/winkjs/wink-nlp) or any other package of your choice.
 
-> Note: [wink-nlp-utils](https://github.com/winkjs/wink-nlp-utils) remains available to support the legacy code. Please refer to [version 3.0.1](https://github.com/winkjs/wink-bm25-text-search/releases/tag/3.0.1) for wink-nlp-util examples.
+> Note: [wink-nlp-utils](https://github.com/winkjs/wink-nlp-utils) remains available to support the legacy code. Please refer to [wink-bm25-text-search version 3.0.1](https://github.com/winkjs/wink-bm25-text-search/releases/tag/3.0.1) for wink-nlp-util examples.
 
 ## Installation
 Use [npm](https://www.npmjs.com/package/wink-bm25-text-search) to install:
@@ -179,7 +179,7 @@ It provides following accessor methods:
 If you spot a bug and the same has not yet been reported, raise a new [issue](https://github.com/winkjs/wink-bm25-text-search/issues) or consider fixing it and sending a pull request.
 
 ### About wink
-[Wink](http://winkjs.org/) is a family of open source packages for **Statistical Analysis**, **Natural Language Processing** and **Machine Learning** in NodeJS. The code is **thoroughly documented** for easy human comprehension and has a **test coverage of ~100%** for reliability to build production grade solutions.
+[Wink](http://winkjs.org/) is a family of open source packages for **Natural Language Processing**, **Statistical Analysis** and **Machine Learning** in NodeJS. The code is **thoroughly documented** for easy human comprehension and has a **test coverage of ~100%** for reliability to build production grade solutions.
 
 
 ## Copyright & License
