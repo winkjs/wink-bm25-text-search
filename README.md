@@ -8,24 +8,22 @@ Fast Full Text Search based on [BM25](http://opensourceconnections.com/blog/2015
 
 <img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
 
-Add fast in-memory semantic search to your application using **`wink-bm25-text-search`**. It is based on state-of-the-art text search algorithm — BM25 — a Probabilistic Relevance Framework for document retrieval. It's [API](#api) offers a rich set of features:
+The **`wink-bm25-text-search`**, based on BM25​​ — a ​p​robabilistic ​r​elevance ​algorithm for document retrieval, is a full text search package to develop apps in either Node.js or browser environments. It builds an in-memory search index from input JSON documents, which is optimized for size and speed.
 
-1. **Scalable Design** allows easy addition/customization of features like **geolocation** and more.
+Explore [wink BM25 text search example](https://winkjs.org/showcase-bm25-text-search/) to dig deeper:
 
-2. **Search on exact values of pre-defined fields**, makes search results more relevant.
+![xxxxx](https://winkjs.org/images/showcase-browser-search.gif)
 
-3. **Index optimized for size and speed** can be exported (and imported) from the added documents in a JSON format.
+Its code is available in [showcase-bm25-text-search](https://github.com/winkjs/showcase-bm25-text-search) repo along with a detailed [blog post](https://winkjs.org/blog/browser-search.html).
 
-4. **Full control over BM25 configuration** — while default values work well for most situations, there is an option to control them.
+It is easy to add **semantic flavor** to the search by:
 
-5. **Add semantic flavor** to the search by:
-    1. Assigning different numerical weights to the fields. A negative field weight will pull down the document's score whenever a match with that field occurs.
-    1. Using rich text processing features of [wink-nlp](https://github.com/winkjs/wink-nlp) such as _negation detection_, _stemming_, _lemmatization_, _stop word detection_ and _named entity detection_ to perform intelligent searches.
-    3. Defining different text preparation tasks separately for the fields and query text.
+1. Assigning different numerical weights to the fields. A negative field weight will pull down the document's score whenever a match with that field occurs.
 
-6. **Complete flexibility in text preparation** — use [wink-nlp](https://github.com/winkjs/wink-nlp) or any other package of your choice.
+2. Using rich text processing features of [wink-nlp](https://github.com/winkjs/wink-nlp) such as _negation detection_, _stemming_, _lemmatization_, _stop word detection_ and _named entity detection_ to perform intelligent searches.
 
-> Note: [wink-nlp-utils](https://github.com/winkjs/wink-nlp-utils) remains available to support the legacy code. Please refer to [wink-bm25-text-search version 3.0.1](https://github.com/winkjs/wink-bm25-text-search/releases/tag/3.0.1) for wink-nlp-util examples.
+3. Defining different text preparation tasks separately for the fields and query text.
+
 
 ## Installation
 Use [npm](https://www.npmjs.com/package/wink-bm25-text-search) to install:
@@ -101,8 +99,7 @@ console.log( docs[ results[ 0 ][ 0 ] ].body );
 
 ```
 
-### How to implement pure browser-side search?
-Explore [Wink BM25 Text Search Showcase](https://winkjs.org/showcase-bm25-text-search/) to dig deeper. Its code is available in [showcase-bm25-text-search](https://github.com/winkjs/showcase-bm25-text-search) repo along with a detailed [blog post](https://winkjs.org/blog/browser-search.html).
+> Note: [wink-nlp-utils](https://github.com/winkjs/wink-nlp-utils) remains available to support the legacy code. Please refer to [wink-bm25-text-search version 3.0.1](https://github.com/winkjs/wink-bm25-text-search/releases/tag/3.0.1) for wink-nlp-util examples.
 
 ## API
 
