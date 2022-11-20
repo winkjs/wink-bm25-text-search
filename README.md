@@ -103,7 +103,7 @@ console.log( docs[ results[ 0 ][ 0 ] ].body );
 
 ## API
 
-#### defineConfig( config )
+### `defineConfig( config )`
 Defines the configuration from the `config` object. This object defines following 3 properties:
 
 1. The `fldWeights` (mandatory) is an object where each *key* is the *document's field name* and the *value* is the *numerical weight* i.e. the importance of that field.
@@ -112,7 +112,7 @@ Defines the configuration from the `config` object. This object defines followin
 
 3. The `ovFldNames` (optional) is an array containing the names of the fields, whose original value must be retained. This is useful in reducing the search space using **filter** in `search()` api call.
 
-#### definePrepTasks( tasks [, field ] )
+### `definePrepTasks( tasks [, field ] )`
 
 Defines the text preparation `tasks` to transform raw incoming text into an array of tokens required during `addDoc()`, and `search()` operations. It returns the count of `tasks`.
 
@@ -120,7 +120,7 @@ The `tasks` should be an array of functions. The first function in this array mu
 
 The second argument — `field` is optional. It defines the `field` of the document for which the `tasks` will be defined; in absence of this argument, the `tasks` become the default for everything else. The configuration must be defined via `defineConfig()` prior to this call.
 
-#### addDoc( doc, uniqueId )
+### `addDoc( doc, uniqueId )`
 Adds the `doc` with the `uniqueId` to the BM25 model. Prior to adding docs, `defineConfig()` and `definePrepTasks()` must be called. It accepts structured JSON documents as input for creating the model. Following is an example document structure of the sample data JSON contained in this package:
 ```
 {
@@ -136,11 +136,11 @@ It has an alias `learn( doc, uniqueId )` to maintain API level uniformity across
 
 
 
-#### consolidate( fp )
+### `consolidate( fp )`
 Consolidates the BM25 model for all the added documents. The `fp` defines the precision at
 which term frequency values are stored. The default value is 4 and is good enough for most situations. It is a prerequisite for `search()` and documents cannot be added post consolidation.
 
-#### search( text [, limit, filter, params ] )
+### `search( text [, limit, filter, params ] )`
 Searches for the `text` and returns upto the `limit` number of results. The `filter` should be a function that must return true or false based on `params`. Think of it as Javascript Array's filter function. It receives two arguments viz. (a) an object containing field name/value pairs as defined via `ovFldNames` in `defineConfig()`, and (b) the `params`.
 
 The last three arguments `limit`, `filter` and `params` are optional. The default value of `limit` is **10**.
@@ -151,13 +151,13 @@ The result is an array of
 Like `addDoc()`, it also has an alias `predict( doc, uniqueId )` to maintain API level uniformity across various [wink](https://www.npmjs.com/~sanjaya) packages such as [wink-naive-bayes-text-classifier](https://www.npmjs.com/package/wink-naive-bayes-text-classifier).
 
 
-#### exportJSON()
+### `exportJSON()`
 The BM25 model can be exported as JSON text that may be saved in a file. It is a good idea to export JSON prior to consolidation and use the same whenever more documents need to be added; whereas JSON exported after consolidation is only good for search operation.
 
-#### importJSON( json )
+### `importJSON( json )`
 An existing JSON BM25 model can be imported for search. It is essential to call `definePrepTasks()` before attempting to search.
 
-#### reset()
+### `reset()`
 It completely resets the BM25 model by re-initializing all the variables, except the preparatory tasks.
 
 ### Accessors
@@ -175,8 +175,8 @@ It provides following accessor methods:
 ## Need Help?
 If you spot a bug and the same has not yet been reported, raise a new [issue](https://github.com/winkjs/wink-bm25-text-search/issues) or consider fixing it and sending a pull request.
 
-### About wink
-[Wink](http://winkjs.org/) is a family of open source packages for **Natural Language Processing**, **Statistical Analysis** and **Machine Learning** in NodeJS. The code is **thoroughly documented** for easy human comprehension and has a **test coverage of ~100%** for reliability to build production grade solutions.
+## About winkJS
+[WinkJS](http://winkjs.org/) is a family of open source packages for **Natural Language Processing**, **Statistical Analysis** and **Machine Learning** in NodeJS. The code is **thoroughly documented** for easy human comprehension and has a **test coverage of ~100%** for reliability to build production grade solutions.
 
 
 ## Copyright & License
