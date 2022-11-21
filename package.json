@@ -1,6 +1,6 @@
 {
   "name": "wink-bm25-text-search",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "Configurable BM25 Text Search Engine with simple semantic search support",
   "keywords": [
     "BM25",
