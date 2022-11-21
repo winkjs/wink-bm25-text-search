@@ -99,7 +99,11 @@ console.log( docs[ results[ 0 ][ 0 ] ].body );
 
 ```
 
-> Note: [wink-nlp-utils](https://github.com/winkjs/wink-nlp-utils) remains available to support the legacy code. Please refer to [wink-bm25-text-search version 3.0.1](https://github.com/winkjs/wink-bm25-text-search/releases/tag/3.0.1) for wink-nlp-util examples.
+> #### Note: 
+> Node.js version 16 or 18 is required for [winkNLP](https://github.com/winkjs/wink-nlp).
+> 
+> The [wink-nlp-utils](https://github.com/winkjs/wink-nlp-utils) remains available to support the legacy code. Please refer to [wink-bm25-text-search version 3.0.1](https://github.com/winkjs/wink-bm25-text-search/releases/tag/3.0.1) for wink-nlp-util examples.
+
 
 ## API
 
